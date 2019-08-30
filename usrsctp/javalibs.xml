@@ -6,17 +6,26 @@
     </formats>
     <fileSets>
         <fileSet>
-            <directory>usrsctp/usrsctplib/.libs</directory>
-            <includes/>
+            <directory>usrsctp_cmake/bin</directory>
+            <includes>
+                <include>*.lib</include>
+                <include>*.a</include>
+            </includes>
+            <outputDirectory>lib</outputDirectory>
+        </fileSet>
+        <fileSet>
+            <directory>usrsctp_cmake/bin/RelWithDebInfo</directory>
+            <includes>
+                <include>*.lib</include>
+                <include>*.a</include>
+            </includes>
             <outputDirectory>lib</outputDirectory>
         </fileSet>
         <fileSet>
             <directory>usrsctp/usrsctplib</directory>
-            <excludes>
-                <exclude>.libs/**</exclude>
-                <exclude>.deps/**</exclude>
-            </excludes>
-            <includes/>
+            <includes>
+                <include>**/*.h</include>
+            </includes>
             <outputDirectory>include</outputDirectory>
         </fileSet>
     </fileSets>
