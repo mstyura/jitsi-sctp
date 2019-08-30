@@ -25,7 +25,8 @@
     will exist) -->
 
     <properties>
-        <usrsctp_dir>usrsctp</usrsctp_dir>
+        <usrsctp_source_dir>usrsctp</usrsctp_source_dir>
+        <usrsctp_cmake_dir>usrsctp_cmake</usrsctp_cmake_dir>
     </properties>
 
     <!-- usrsctp is only bootstrap'd, configure'd and make'd if '-DbuildSctp' is passed -->
@@ -46,50 +47,74 @@
                         <version>1.6.0</version>
                         <executions>
                             <execution>
-                                <id>bootstrap</id>
-                                <phase>compile</phase>
-                                <goals><goal>exec</goal></goals>
+                                <id>cmake-prepare-build-dir</id>
+                                <phase>initialize</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
                                 <configuration>
-                                    <workingDirectory>${usrsctp_dir}</workingDirectory>
-                                    <executable>./bootstrap</executable>
+                                    <executable>cmake</executable>
+                                    <arguments>
+                                        <argument>-E</argument>
+                                        <argument>make_directory</argument>
+                                        <argument>${basedir}/${usrsctp_cmake_dir}</argument>
+                                    </arguments>
                                 </configuration>
                             </execution>
                             <execution>
-                                <id>configure</id>
-                                <phase>compile</phase>
-                                <goals><goal>exec</goal></goals>
+                                <id>cmake-generate-build-files</id>
+                                <phase>generate-sources</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
                                 <configuration>
-                                    <workingDirectory>${usrsctp_dir}</workingDirectory>
-                                    <executable>./configure</executable>
+                                    <workingDirectory>${basedir}/${usrsctp_cmake_dir}</workingDirectory>
+                                    <executable>cmake</executable>
                                     <arguments>
-                                        <argument>--with-pic</argument>
-                                        <argument>--enable-invariants</argument>
+                                        <argument>-DCMAKE_BUILD_TYPE=RelWithDebInfo</argument>
+                                        <argument>-DCMAKE_POSITION_INDEPENDENT_CODE=ON</argument>
+                                        <argument>-Dsctp_invariants=ON</argument>
+                                        <argument>-Dsctp_debug=OFF</argument>
+                                        <argument>-DCMAKE_C_FLAGS='-fno-omit-frame-pointer -fno-optimize-sibling-calls'</argument>
+                                        <argument>${basedir}/${usrsctp_source_dir}</argument>
                                     </arguments>
                                 </configuration>
                             </execution>
                             <execution>
                                 <!-- Make all in the Maven compile phase -->
-                                <id>buildlib</id>
+                                <id>cmake-build</id>
                                 <phase>compile</phase>
-                                <goals><goal>exec</goal></goals>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
                                 <configuration>
-                                    <workingDirectory>${usrsctp_dir}</workingDirectory>
-                                    <executable>make</executable>
+                                    <workingDirectory>${basedir}/${usrsctp_cmake_dir}</workingDirectory>
+                                    <executable>cmake</executable>
                                     <arguments>
-                                        <argument>all</argument>
+                                        <argument>--build</argument>
+                                        <argument>.</argument>
+                                        <argument>--config</argument>
+                                        <argument>RelWithDebInfo</argument>
+                                        <argument>--target</argument>
+                                        <argument>usrsctp-static</argument>
+                                        <argument>--clean-first</argument>
                                     </arguments>
                                 </configuration>
                             </execution>
                             <execution>
                                 <!-- Make clean in the Maven clean phase -->
-                                <id>cleanlib</id>
+                                <id>cmake-clean</id>
                                 <phase>clean</phase>
-                                <goals><goal>exec</goal></goals>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
                                 <configuration>
-                                    <workingDirectory>${usrsctp_dir}</workingDirectory>
-                                    <executable>make</executable>
+                                    <workingDirectory>${basedir}</workingDirectory>
+                                    <executable>cmake</executable>
                                     <arguments>
-                                        <argument>clean</argument>
+                                        <argument>-E</argument>
+                                        <argument>remove_directory</argument>
+                                        <argument>${usrsctp_cmake_dir}</argument>
                                     </arguments>
                                 </configuration>
                             </execution>

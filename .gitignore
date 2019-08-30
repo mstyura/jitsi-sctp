@@ -2,4 +2,5 @@
 **/target/*
 .idea
 usrsctp/usrsctp/*
+usrsctp/usrsctp_cmake/*
 **/*.swp

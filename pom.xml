@@ -33,6 +33,18 @@
                 <os>linux</os>
             </properties>
         </profile>
+        <profile>
+            <id>windows</id>
+            <activation>
+                <os>
+                    <family>WindowsNT</family>
+                    <name>Windows</name>
+                </os>
+            </activation>
+            <properties>
+                <os>windows</os>
+            </properties>
+        </profile>
     </profiles>
 
     <modules>
