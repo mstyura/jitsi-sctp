@@ -6,12 +6,19 @@
     </formats>
     <fileSets>
         <fileSet>
-            <directory>target/usrsctp_cmake/install</directory>
+            <directory>target/usrsctp_cmake/install/lib</directory>
             <includes>
-                <include>**/*.lib</include>
-                <include>**/*.a</include>
-                <include>**/*.h</include>
+                <include>*.lib</include>
+                <include>*.a</include>
             </includes>
+            <outputDirectory>lib</outputDirectory>
+        </fileSet>
+        <fileSet>
+            <directory>target/usrsctp_cmake/install/include</directory>
+            <includes>
+                <include>*.h</include>
+            </includes>
+            <outputDirectory>include</outputDirectory>
         </fileSet>
     </fileSets>
 </assembly>
