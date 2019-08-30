@@ -57,7 +57,7 @@
                                     <arguments>
                                         <argument>-E</argument>
                                         <argument>make_directory</argument>
-                                        <argument>${basedir}/${usrsctp_cmake_dir}</argument>
+                                        <argument>${basedir}/${usrsctp_cmake_dir}/bin</argument>
                                     </arguments>
                                 </configuration>
                             </execution>
@@ -76,6 +76,7 @@
                                         <argument>-Dsctp_invariants=ON</argument>
                                         <argument>-Dsctp_debug=OFF</argument>
                                         <argument>-DCMAKE_C_FLAGS='-fno-omit-frame-pointer -fno-optimize-sibling-calls'</argument>
+                                        <argument>-DCMAKE_ARCHIVE_OUTPUT_DIRECTORY='${basedir}/${usrsctp_cmake_dir}/bin'</argument>
                                         <argument>${basedir}/${usrsctp_source_dir}</argument>
                                     </arguments>
                                 </configuration>
