@@ -15,21 +15,18 @@
     <name>usrsctp native library</name>
 
     <!-- This module handles the following:
-    1) run ./bootstrap in usrsctp
-    2) run ./configure (with the option below) in usrsctp
-    3) run make in usrsctp
-    4) assemble the built libs and headers into a zip file that can be depended on by others (see the jniwrapper-native
+    1) compiles usrsctp with cmake
+    2) assemble the built libs and headers into a zip file that can be depended on by others (see the jniwrapper-native
     module)
     It assumes:
-    1) A checkout of the usrsctp src has been done within src/native/usrsctp (i.e. after clone src/native/usrsctp/usrsctp
-    will exist) -->
+    1) cmake and C compiler and linker are installed on traget system -->
 
     <properties>
-        <usrsctp_source_dir>usrsctp</usrsctp_source_dir>
-        <usrsctp_cmake_dir>usrsctp_cmake</usrsctp_cmake_dir>
+        <usrsctp_source_dir>${basedir}/usrsctp</usrsctp_source_dir>
+        <usrsctp_cmake_dir>${build.directory}/usrsctp_cmake</usrsctp_cmake_dir>
     </properties>
 
-    <!-- usrsctp is only bootstrap'd, configure'd and make'd if '-DbuildSctp' is passed -->
+    <!-- usrsctp is only compiled if '-DbuildSctp' is passed -->
     <profiles>
         <profile>
             <id>build usrsctp</id>
@@ -57,7 +54,7 @@
                                     <arguments>
                                         <argument>-E</argument>
                                         <argument>make_directory</argument>
-                                        <argument>${basedir}/${usrsctp_cmake_dir}/bin</argument>
+                                        <argument>${usrsctp_cmake_dir}/install</argument>
                                     </arguments>
                                 </configuration>
                             </execution>
@@ -68,7 +65,7 @@
                                     <goal>exec</goal>
                                 </goals>
                                 <configuration>
-                                    <workingDirectory>${basedir}/${usrsctp_cmake_dir}</workingDirectory>
+                                    <workingDirectory>${usrsctp_cmake_dir}</workingDirectory>
                                     <executable>cmake</executable>
                                     <arguments>
                                         <argument>-DCMAKE_BUILD_TYPE=RelWithDebInfo</argument>
@@ -76,8 +73,8 @@
                                         <argument>-Dsctp_invariants=ON</argument>
                                         <argument>-Dsctp_debug=OFF</argument>
                                         <argument>-DCMAKE_C_FLAGS='-fno-omit-frame-pointer -fno-optimize-sibling-calls'</argument>
-                                        <argument>-DCMAKE_ARCHIVE_OUTPUT_DIRECTORY='${basedir}/${usrsctp_cmake_dir}/bin'</argument>
-                                        <argument>${basedir}/${usrsctp_source_dir}</argument>
+                                        <argument>-DCMAKE_INSTALL_PREFIX='${usrsctp_cmake_dir}/install'</argument>
+                                        <argument>${usrsctp_source_dir}</argument>
                                     </arguments>
                                 </configuration>
                             </execution>
@@ -89,7 +86,7 @@
                                     <goal>exec</goal>
                                 </goals>
                                 <configuration>
-                                    <workingDirectory>${basedir}/${usrsctp_cmake_dir}</workingDirectory>
+                                    <workingDirectory>${usrsctp_cmake_dir}</workingDirectory>
                                     <executable>cmake</executable>
                                     <arguments>
                                         <argument>--build</argument>
@@ -97,7 +94,7 @@
                                         <argument>--config</argument>
                                         <argument>RelWithDebInfo</argument>
                                         <argument>--target</argument>
-                                        <argument>usrsctp-static</argument>
+                                        <argument>install</argument>
                                         <argument>--clean-first</argument>
                                     </arguments>
                                 </configuration>
@@ -110,7 +107,6 @@
                                     <goal>exec</goal>
                                 </goals>
                                 <configuration>
-                                    <workingDirectory>${basedir}</workingDirectory>
                                     <executable>cmake</executable>
                                     <arguments>
                                         <argument>-E</argument>

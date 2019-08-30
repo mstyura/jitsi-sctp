@@ -6,27 +6,12 @@
     </formats>
     <fileSets>
         <fileSet>
-            <directory>usrsctp_cmake/bin</directory>
+            <directory>target/usrsctp_cmake/install</directory>
             <includes>
-                <include>*.lib</include>
-                <include>*.a</include>
-            </includes>
-            <outputDirectory>lib</outputDirectory>
-        </fileSet>
-        <fileSet>
-            <directory>usrsctp_cmake/bin/RelWithDebInfo</directory>
-            <includes>
-                <include>*.lib</include>
-                <include>*.a</include>
-            </includes>
-            <outputDirectory>lib</outputDirectory>
-        </fileSet>
-        <fileSet>
-            <directory>usrsctp/usrsctplib</directory>
-            <includes>
+                <include>**/*.lib</include>
+                <include>**/*.a</include>
                 <include>**/*.h</include>
             </includes>
-            <outputDirectory>include</outputDirectory>
         </fileSet>
     </fileSets>
 </assembly>
