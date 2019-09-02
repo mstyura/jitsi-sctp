@@ -72,15 +72,15 @@ if (WIN32)
     )
 endif ()
 
-add_library(jnsctp SHARED
+add_library(jnisctp SHARED
     ${usrsctp_jni_sources}
 )
 
-target_link_libraries(jnsctp PRIVATE
+target_link_libraries(jnisctp PRIVATE
     ${usrsctp_jni_dependencies}
 )
 
-target_include_directories(jnsctp PRIVATE
+target_include_directories(jnisctp PRIVATE
     ${JNI_INCLUDE_DIRS}
     ${JNSCTP_JNI_HEADERS_DIR}
     ${JNSCTP_USRSCTP_DIR}/include
@@ -90,7 +90,7 @@ target_include_directories(jnsctp PRIVATE
 #################################################
 # INSTALL LIBRARY
 #################################################
-install(TARGETS jnsctp
+install(TARGETS jnisctp
         RUNTIME
             DESTINATION ${CMAKE_INSTALL_PREFIX}
         LIBRARY

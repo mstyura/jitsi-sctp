@@ -135,6 +135,7 @@
                                     <arguments>
                                         <argument>-DCMAKE_BUILD_TYPE=RelWithDebInfo</argument>
                                         <argument>-DCMAKE_POSITION_INDEPENDENT_CODE=ON</argument>
+                                        <argument>-DCMAKE_GENERATOR_PLATFORM=x64</argument>
                                         <argument>-DJNSCTP_JNI_HEADERS_DIR="${javah_output_dir}"</argument>
                                         <argument>-DJNSCTP_USRSCTP_DIR="${usrsctp_dir}/usrsctp-${project.version}"
                                         </argument>
@@ -160,7 +161,7 @@
                                         <argument>--config</argument>
                                         <argument>RelWithDebInfo</argument>
                                         <argument>--target</argument>
-                                        <argument>jnsctp</argument>
+                                        <argument>jnisctp</argument>
                                         <argument>--clean-first</argument>
                                     </arguments>
                                 </configuration>
