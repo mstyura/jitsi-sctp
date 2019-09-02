@@ -4,11 +4,11 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <!-- This module is responsible for building the final usrsctp native library: that is the one that will
+    <!-- This module is responsible for building the final usrsctp native shared library: that is the one that will
      be loaded via System.loadLibrary(...) in the java code.  The library is placed in the 'target' output
      directory and will be named "libjnisctp.jnilib".  Note that when building the jar, it uses the libs in
      the prebuilt lib directory (src/main/resources/lib/), so if you want to use the jnilib you just built, you'll
-     need to copy it into the right place (correct platfomr subdir) in that prebuilt lib directory -->
+     need to copy it into the right place (correct platform subdir) in that prebuilt lib directory -->
     <parent>
         <groupId>org.jitsi</groupId>
         <artifactId>jniwrapper</artifactId>
@@ -19,9 +19,15 @@
     <artifactId>jniwrapper-native</artifactId>
     <name>usrsctp JNI wrapper (native code)</name>
 
+    <properties>
+        <usrsctp_dir>${project.build.directory}/usrsctp</usrsctp_dir>
+        <jnsctp_build_dir>${project.build.directory}/jnsctp_cmake</jnsctp_build_dir>
+        <javah_output_dir>${project.build.directory}/native/javah</javah_output_dir>
+    </properties>
+
     <profiles>
         <profile>
-            <!-- This profile is activated when we're on mac and defines the compiler args we'll use if we're
+            <!-- This profile is activated when we're on mac and defines the properties we'll use if we're
             rebuilding the native jniwrapper -->
             <id>mac-compile-args</id>
             <activation>
@@ -30,14 +36,7 @@
                 </os>
             </activation>
             <properties>
-                <libextension>jnilib</libextension>
-                <linkStartOpts>
-                    -shared
-                    -L${project.build.directory}/usrsctp-${project.version}/lib
-                    target/usrsctp-1.0-SNAPSHOT/lib/libusrsctp.a
-                    -lpthread
-                </linkStartOpts>
-                <linkEndOpts></linkEndOpts>
+                <libraryInstallOsDir>darwin</libraryInstallOsDir>
             </properties>
         </profile>
         <profile>
@@ -51,17 +50,20 @@
                 </os>
             </activation>
             <properties>
-                <libextension>so</libextension>
-                <linkStartOpts>
-                      -L${project.build.directory}/usrsctp-${project.version}/lib
-                      -shared
-                </linkStartOpts>
-                <linkEndOpts>
-                     -Wl,-Bstatic
-                     -lusrsctp
-                     -Wl,-Bdynamic
-                     -lpthread
-                </linkEndOpts>
+                <libraryInstallOsDir>linux</libraryInstallOsDir>
+            </properties>
+        </profile>
+        <profile>
+            <!-- This profile is activated when we're on linux and defines the compiler args we'll use if we're
+            rebuilding the native jniwrapper -->
+            <id>windows-compile-args</id>
+            <activation>
+                <os>
+                    <family>windows</family>
+                </os>
+            </activation>
+            <properties>
+                <libraryInstallOsDir>windows</libraryInstallOsDir>
             </properties>
         </profile>
         <profile>
@@ -88,6 +90,24 @@
             <build>
                 <plugins>
                     <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-dependency-plugin</artifactId>
+                        <executions>
+                            <!-- Unpack header files and libraries for build -->
+                            <execution>
+                                <id>unpack</id>
+                                <phase>generate-sources</phase>
+                                <goals>
+                                    <goal>unpack-dependencies</goal>
+                                </goals>
+                                <configuration>
+                                    <includeTypes>zip</includeTypes>
+                                    <outputDirectory>${usrsctp_dir}</outputDirectory>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>native-maven-plugin</artifactId>
                         <version>1.0-alpha-9</version>
@@ -95,50 +115,97 @@
                         <executions>
                             <execution>
                                 <id>java-compile</id>
-                                <phase>compile</phase>
+                                <phase>generate-sources</phase>
                                 <goals>
                                     <goal>javah</goal>
-                                    <goal>compile</goal>
-                                    <goal>link</goal>
                                 </goals>
                             </execution>
                         </executions>
                         <configuration>
-                            <compilerProvider>generic</compilerProvider>
-                            <compilerStartOptions>
-                                <compilerStartOption>
-                                    -g -fPIC -std=c99 -O2 -Wall -Itarget/native/javah
-                                </compilerStartOption>
-                            </compilerStartOptions>
-
                             <javahClassNames>
                                 <javahClassName>org.jitsi_modified.sctp4j.SctpJni</javahClassName>
                             </javahClassNames>
-                            <javahOS>${os}</javahOS>
-
-                            <sources>
-                                <source>
-                                    <directory>src</directory>
-                                    <fileNames>
-                                        <fileName>org_jitsi_modified_sctp4j_SctpJni.c</fileName>
-                                    </fileNames>
-                                </source>
-                                <source>
-                                    <directory>
-                                        ${project.build.directory}/usrsctp-${project.version}/include
-                                    </directory>
-                                </source>
-                            </sources>
-
-                            <linkerStartOptions>
-                                <linkerStartOption>${linkStartOpts}</linkerStartOption>
-                            </linkerStartOptions>
-                            <linkerEndOptions>
-                                <linkerEndOption>${linkEndOpts}</linkerEndOption>
-                            </linkerEndOptions>
-                            <linkerFinalName>libjnisctp-${os}-${os.arch}</linkerFinalName>
-                            <linkerFinalNameExt>${libextension}</linkerFinalNameExt>
+                            <javahOutputDirectory>${javah_output_dir}</javahOutputDirectory>
                         </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>1.6.0</version>
+                        <executions>
+                            <execution>
+                                <id>cmake-initialize</id>
+                                <phase>initialize</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <executable>cmake</executable>
+                                    <arguments>
+                                        <argument>-E</argument>
+                                        <argument>make_directory</argument>
+                                        <argument>${jnsctp_build_dir}</argument>
+                                    </arguments>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>cmake-clean</id>
+                                <phase>clean</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <executable>cmake</executable>
+                                    <arguments>
+                                        <argument>-E</argument>
+                                        <argument>remove_directory</argument>
+                                        <argument>${jnsctp_build_dir}</argument>
+                                    </arguments>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>cmake-generate-build-files</id>
+                                <phase>generate-sources</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <workingDirectory>${jnsctp_build_dir}</workingDirectory>
+                                    <executable>cmake</executable>
+                                    <arguments>
+                                        <argument>-DCMAKE_BUILD_TYPE=RelWithDebInfo</argument>
+                                        <argument>-DCMAKE_POSITION_INDEPENDENT_CODE=ON</argument>
+                                        <argument>-DJNSCTP_JNI_HEADERS_DIR="${javah_output_dir}"</argument>
+                                        <argument>-DJNSCTP_USRSCTP_DIR="${usrsctp_dir}/usrsctp-${project.version}"
+                                        </argument>
+                                        <argument>
+                                            -DCMAKE_INSTALL_PREFIX="${project.basedir}/src/main/resources/lib/${libraryInstallOsDir}/"
+                                        </argument>
+                                        <argument>${basedir}/src</argument>
+                                    </arguments>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>cmake-compile</id>
+                                <phase>compile</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <workingDirectory>${jnsctp_build_dir}</workingDirectory>
+                                    <executable>cmake</executable>
+                                    <arguments>
+                                        <argument>--build</argument>
+                                        <argument>.</argument>
+                                        <argument>--config</argument>
+                                        <argument>RelWithDebInfo</argument>
+                                        <argument>--target</argument>
+                                        <argument>jnsctp</argument>
+                                        <argument>--clean-first</argument>
+                                    </arguments>
+                                </configuration>
+                            </execution>
+                        </executions>
                     </plugin>
                 </plugins>
             </build>
@@ -166,15 +233,19 @@
                             <execution>
                                 <id>deploy-jnilib</id>
                                 <phase>prepare-package</phase>
-                                <goals><goal>exec</goal></goals>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
                                 <configuration>
-                                    <workingDirectory>${project.build.directory}</workingDirectory>
-                                    <!--<executable>echo</executable>-->
-                                    <!--<arguments><argument>"hello"</argument></arguments>-->
-                                    <executable>cp</executable>
+                                    <workingDirectory>${jnsctp_build_dir}</workingDirectory>
+                                    <executable>cmake</executable>
                                     <arguments>
-                                        <argument>libjnisctp-${os}-${os.arch}.${libextension}</argument>
-                                        <argument>${project.basedir}/src/main/resources/lib/${os}/libjnisctp.jnilib</argument>
+                                        <argument>--build</argument>
+                                        <argument>.</argument>
+                                        <argument>--config</argument>
+                                        <argument>RelWithDebInfo</argument>
+                                        <argument>--target</argument>
+                                        <argument>install</argument>
                                     </arguments>
                                 </configuration>
                             </execution>
@@ -192,28 +263,4 @@
             <version>${project.version}</version>
         </dependency>
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <executions>
-                    <!-- Unpack header files and libraries for build -->
-                    <execution>
-                        <id>unpack</id>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>unpack-dependencies</goal>
-                        </goals>
-                        <configuration>
-                            <includeTypes>zip</includeTypes>
-                            <outputDirectory>${project.build.directory}</outputDirectory>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
-        </plugins>
-    </build>
 </project>

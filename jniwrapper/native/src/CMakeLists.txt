@@ -1,0 +1,97 @@
+project(jni-sctp-wrapper C)
+cmake_minimum_required(VERSION 3.0)
+
+
+#################################################
+# CMAKE CONFIGURABLE VARIABLES
+################################################
+
+# Release with debug info build type as default
+if (NOT CMAKE_BUILD_TYPE)
+	message(STATUS "No build type selected, using RelWithDebInfo")
+	set(CMAKE_BUILD_TYPE "RelWithDebInfo")
+endif ()
+
+set(JNSCTP_JNI_HEADERS_DIR "" CACHE PATH "Path to directory with javah generated headers")
+set(JNSCTP_USRSCTP_DIR "" CACHE PATH "Path to pre-built usrsctp library (directory with dir and include subdirs)")
+
+message(STATUS "usrsctp directory (JNSCTP_USRSCTP_DIR): ${JNSCTP_USRSCTP_DIR}")
+message(STATUS "javah headers directory (JNSCTP_JNI_HEADERS_DIR): ${JNSCTP_JNI_HEADERS_DIR}")
+
+
+#################################################
+# LOAD EXTERNAL LIBRARIES INFO
+#################################################
+
+find_package(JNI)
+find_package(Threads)
+find_library(USRSCTP_LIB usrsctp ${JNSCTP_USRSCTP_DIR}/lib)
+
+
+#################################################
+# COMPILER SETTINGS
+#################################################
+
+# SETTINGS FOR UNIX COMPILER
+if (CMAKE_C_COMPILER_ID MATCHES "Clang" OR CMAKE_C_COMPILER_ID MATCHES "AppleClang" OR CMAKE_C_COMPILER_ID MATCHES "GNU")
+	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c99 -pedantic -Wall -Wextra")
+endif ()
+
+# SETTINGS FOR VISUAL STUDIO COMPILER
+if (CMAKE_C_COMPILER_ID MATCHES "MSVC")
+	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /Wall")
+endif ()
+
+message(STATUS "Compiler flags (CMAKE_C_FLAGS): ${CMAKE_C_FLAGS}")
+
+
+#################################################
+# LIBRARY NAMING CONFIGURATION
+#################################################
+
+if (APPLE)
+    set(CMAKE_SHARED_LIBRARY_SUFFIX_C ".jnilib")
+endif ()
+
+#################################################
+# TARGETS DEFINITION
+#################################################
+
+list(APPEND usrsctp_jni_sources
+	org_jitsi_modified_sctp4j_SctpJni.c
+)
+
+list(APPEND usrsctp_jni_dependencies
+    ${USRSCTP_LIB}
+    ${CMAKE_THREAD_LIBS_INIT}
+)
+
+if (WIN32)
+    list(APPEND usrsctp_jni_dependencies
+        ws2_32
+    )
+endif ()
+
+add_library(jnsctp SHARED
+    ${usrsctp_jni_sources}
+)
+
+target_link_libraries(jnsctp PRIVATE
+    ${usrsctp_jni_dependencies}
+)
+
+target_include_directories(jnsctp PRIVATE
+    ${JNI_INCLUDE_DIRS}
+    ${JNSCTP_JNI_HEADERS_DIR}
+    ${JNSCTP_USRSCTP_DIR}/include
+)
+
+
+#################################################
+# INSTALL LIBRARY
+#################################################
+install(TARGETS jnsctp
+        RUNTIME
+            DESTINATION ${CMAKE_INSTALL_PREFIX}
+        LIBRARY
+            DESTINATION ${CMAKE_INSTALL_PREFIX})
