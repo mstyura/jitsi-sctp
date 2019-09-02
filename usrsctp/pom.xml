@@ -70,6 +70,7 @@
                                     <arguments>
                                         <argument>-DCMAKE_BUILD_TYPE=RelWithDebInfo</argument>
                                         <argument>-DCMAKE_POSITION_INDEPENDENT_CODE=ON</argument>
+                                        <argument>-DCMAKE_GENERATOR_PLATFORM=x64</argument>
                                         <argument>-Dsctp_invariants=ON</argument>
                                         <argument>-Dsctp_debug=OFF</argument>
                                         <argument>-DCMAKE_C_FLAGS='-fno-omit-frame-pointer -fno-optimize-sibling-calls'</argument>
