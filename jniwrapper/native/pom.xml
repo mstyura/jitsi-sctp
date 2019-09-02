@@ -27,46 +27,6 @@
 
     <profiles>
         <profile>
-            <!-- This profile is activated when we're on mac and defines the properties we'll use if we're
-            rebuilding the native jniwrapper -->
-            <id>mac-compile-args</id>
-            <activation>
-                <os>
-                    <family>mac</family>
-                </os>
-            </activation>
-            <properties>
-                <libraryInstallOsDir>darwin</libraryInstallOsDir>
-            </properties>
-        </profile>
-        <profile>
-            <!-- This profile is activated when we're on linux and defines the compiler args we'll use if we're
-            rebuilding the native jniwrapper -->
-            <id>linux-compile-args</id>
-            <activation>
-                <os>
-                    <family>unix</family>
-                    <name>Linux</name>
-                </os>
-            </activation>
-            <properties>
-                <libraryInstallOsDir>linux</libraryInstallOsDir>
-            </properties>
-        </profile>
-        <profile>
-            <!-- This profile is activated when we're on linux and defines the compiler args we'll use if we're
-            rebuilding the native jniwrapper -->
-            <id>windows-compile-args</id>
-            <activation>
-                <os>
-                    <family>windows</family>
-                </os>
-            </activation>
-            <properties>
-                <libraryInstallOsDir>windows</libraryInstallOsDir>
-            </properties>
-        </profile>
-        <profile>
             <!-- This profile is activated when the system property 'buildNativeWrapper' is defined (i.e. via
             passing -DbuildNativeWrapper to maven).  It adds a dependency on the usrsctp jar (since we'll need
             the built libraries and include headers from it) and recompiles the native jniwrapper code -->
@@ -179,7 +139,7 @@
                                         <argument>-DJNSCTP_USRSCTP_DIR="${usrsctp_dir}/usrsctp-${project.version}"
                                         </argument>
                                         <argument>
-                                            -DCMAKE_INSTALL_PREFIX="${project.basedir}/src/main/resources/lib/${libraryInstallOsDir}/"
+                                            -DCMAKE_INSTALL_PREFIX="${project.basedir}/src/main/resources/lib/${osAlias}/"
                                         </argument>
                                         <argument>${basedir}/src</argument>
                                     </arguments>
