@@ -70,7 +70,6 @@
                     <plugin>
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>native-maven-plugin</artifactId>
-                        <version>1.0-alpha-9</version>
                         <extensions>true</extensions>
                         <executions>
                             <execution>
@@ -91,7 +90,6 @@
                     <plugin>
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>exec-maven-plugin</artifactId>
-                        <version>1.6.0</version>
                         <executions>
                             <execution>
                                 <id>cmake-initialize</id>
@@ -189,7 +187,6 @@
                     <plugin>
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>exec-maven-plugin</artifactId>
-                        <version>1.6.0</version>
                         <executions>
                             <execution>
                                 <id>deploy-jnilib</id>
