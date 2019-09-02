@@ -21,7 +21,20 @@ import cz.adamh.utils.NativeUtils;
 public class SctpJni {
     static {
         // Load the native library
+        loadJniLibrary();
+    }
+    private static void loadJniLibrary() {
         try {
+            try {
+                // Prefer user-provided library over bundled into Jar
+                System.loadLibrary("jnisctp");
+                return;
+            }
+            catch (UnsatisfiedLinkError e) {
+                System.out.println("SCTP JNI load: unable to load jnsctcp by System.loadLibrary(String libname) " +
+                        "will extract library from JAR");
+            }
+
             String os = System.getProperty("os.name");
             if (os.toLowerCase().contains("mac")) {
                 System.out.println("SCTP JNI load: Mac OS detected");
@@ -29,6 +42,9 @@ public class SctpJni {
             } else if (os.toLowerCase().contains("linux")) {
                 System.out.println("SCTP JNI load: Linux OS detected");
                 NativeUtils.loadLibraryFromJar("/lib/linux/libjnisctp.so");
+            } else if (os.toLowerCase().contains("windows")) {
+                System.out.println("SCTP JNI load: Windows OS detected");
+                NativeUtils.loadLibraryFromJar("/lib/windows/jnisctp.dll");
             } else {
                 throw new Exception("Unsupported OS: " + os);
             }
