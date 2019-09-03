@@ -15,8 +15,8 @@ endif ()
 set(JNISCTP_JNI_HEADERS_DIR "" CACHE PATH "Path to directory with javah generated headers")
 set(JNISCTP_USRSCTP_DIR "" CACHE PATH "Path to pre-built usrsctp library (directory with dir and include subdirs)")
 
-message(STATUS "usrsctp directory (JNISCTP_USRSCTP_DIR): ${JNISCTP_USRSCTP_DIR}")
-message(STATUS "javah headers directory (JNISCTP_JNI_HEADERS_DIR): ${JNISCTP_JNI_HEADERS_DIR}")
+message(STATUS "usrsctp directory (JNISCTP_USRSCTP_DIR): `${JNISCTP_USRSCTP_DIR}`")
+message(STATUS "javah headers directory (JNISCTP_JNI_HEADERS_DIR): `${JNISCTP_JNI_HEADERS_DIR}`")
 
 
 #################################################
