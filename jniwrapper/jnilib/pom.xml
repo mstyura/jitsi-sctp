@@ -19,7 +19,7 @@
 
     <profiles>
         <profile>
-            <id>buildJarWithAllNativeLibraries</id>
+            <id>build-jar-with-all-native-libraries</id>
             <activation>
                 <property>
                     <name>buildXPlatJar</name>
