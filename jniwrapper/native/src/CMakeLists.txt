@@ -12,11 +12,11 @@ if (NOT CMAKE_BUILD_TYPE)
 	set(CMAKE_BUILD_TYPE "RelWithDebInfo")
 endif ()
 
-set(JNSCTP_JNI_HEADERS_DIR "" CACHE PATH "Path to directory with javah generated headers")
-set(JNSCTP_USRSCTP_DIR "" CACHE PATH "Path to pre-built usrsctp library (directory with dir and include subdirs)")
+set(JNISCTP_JNI_HEADERS_DIR "" CACHE PATH "Path to directory with javah generated headers")
+set(JNISCTP_USRSCTP_DIR "" CACHE PATH "Path to pre-built usrsctp library (directory with dir and include subdirs)")
 
-message(STATUS "usrsctp directory (JNSCTP_USRSCTP_DIR): ${JNSCTP_USRSCTP_DIR}")
-message(STATUS "javah headers directory (JNSCTP_JNI_HEADERS_DIR): ${JNSCTP_JNI_HEADERS_DIR}")
+message(STATUS "usrsctp directory (JNISCTP_USRSCTP_DIR): ${JNISCTP_USRSCTP_DIR}")
+message(STATUS "javah headers directory (JNISCTP_JNI_HEADERS_DIR): ${JNISCTP_JNI_HEADERS_DIR}")
 
 
 #################################################
@@ -25,7 +25,7 @@ message(STATUS "javah headers directory (JNSCTP_JNI_HEADERS_DIR): ${JNSCTP_JNI_H
 
 find_package(JNI)
 find_package(Threads)
-find_library(USRSCTP_LIB usrsctp ${JNSCTP_USRSCTP_DIR}/lib)
+find_library(USRSCTP_LIB usrsctp ${JNISCTP_USRSCTP_DIR}/lib)
 
 
 #################################################
@@ -84,8 +84,8 @@ target_link_libraries(${JNI_TARGET_NAME} PRIVATE
 
 target_include_directories(${JNI_TARGET_NAME} PRIVATE
     ${JNI_INCLUDE_DIRS}
-    ${JNSCTP_JNI_HEADERS_DIR}
-    ${JNSCTP_USRSCTP_DIR}/include
+    ${JNISCTP_JNI_HEADERS_DIR}
+    ${JNISCTP_USRSCTP_DIR}/include
 )
 
 

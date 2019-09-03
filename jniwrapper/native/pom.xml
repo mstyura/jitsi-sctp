@@ -133,8 +133,8 @@
                                     <arguments>
                                         <argument>-DCMAKE_BUILD_TYPE=RelWithDebInfo</argument>
                                         <argument>-DCMAKE_POSITION_INDEPENDENT_CODE=ON</argument>
-                                        <argument>-DJNSCTP_JNI_HEADERS_DIR="${javah_output_dir}"</argument>
-                                        <argument>-DJNSCTP_USRSCTP_DIR="${usrsctp_dir}/usrsctp-${project.version}"</argument>
+                                        <argument>-DJNISCTP_JNI_HEADERS_DIR="${javah_output_dir}"</argument>
+                                        <argument>-DJNISCTP_USRSCTP_DIR="${usrsctp_dir}/usrsctp-${project.version}"</argument>
                                         <argument>-DCMAKE_INSTALL_PREFIX="${project.basedir}/src/main/resources/lib/${os_alias}/"</argument>
                                         <argument>${cmake_c_flags}</argument>
                                         <argument>${cmake_generator_platform}</argument>
