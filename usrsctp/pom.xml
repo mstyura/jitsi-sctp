@@ -22,7 +22,7 @@
     1) CMake and C compiler and linker are installed on target system -->
 
     <properties>
-        <usrsctp_source_dir>${basedir}/usrsctp</usrsctp_source_dir>
+        <usrsctp_source_dir>${project.basedir}/usrsctp</usrsctp_source_dir>
         <usrsctp_cmake_dir>${project.build.directory}/usrsctp_cmake/${maven_platform_classifier}</usrsctp_cmake_dir>
         <usrsctp_install_dir>${usrsctp_cmake_dir}/install</usrsctp_install_dir>
     </properties>
@@ -74,7 +74,7 @@
                                         <argument>-Dsctp_debug=OFF</argument>
                                         <argument>${cmake_generator_platform}</argument>
                                         <argument>${cmake_c_flags}</argument>
-                                        <argument>-DCMAKE_INSTALL_PREFIX='${usrsctp_install_dir}'</argument>
+                                        <argument>-DCMAKE_INSTALL_PREFIX=${usrsctp_install_dir}</argument>
                                         <argument>${usrsctp_source_dir}</argument>
                                     </arguments>
                                 </configuration>
