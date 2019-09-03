@@ -42,7 +42,7 @@
                     <groupId>org.jitsi</groupId>
                     <artifactId>jniwrapper-native</artifactId>
                     <version>${project.version}</version>
-                    <classifier>mac</classifier>
+                    <classifier>darwin</classifier>
                 </dependency>
             </dependencies>
         </profile>
