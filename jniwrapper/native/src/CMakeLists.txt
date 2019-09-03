@@ -12,8 +12,13 @@ if (NOT CMAKE_BUILD_TYPE)
 	set(CMAKE_BUILD_TYPE "RelWithDebInfo")
 endif ()
 
-set(JNISCTP_JNI_HEADERS_DIR "" CACHE PATH "Path to directory with javah generated headers")
-set(JNISCTP_USRSCTP_DIR "" CACHE PATH "Path to pre-built usrsctp library (directory with dir and include subdirs)")
+set(CMAKE_C_STANDARD 11)
+
+set(JNISCTP_JNI_HEADERS_DIR "${JNISCTP_JNI_HEADERS_DIR}"
+    CACHE PATH "Path to directory with javah generated headers")
+
+set(JNISCTP_USRSCTP_DIR "${JNISCTP_USRSCTP_DIR}"
+    CACHE PATH "Path to pre-built usrsctp library (directory with lib and include subdirs)")
 
 message(STATUS "usrsctp directory (JNISCTP_USRSCTP_DIR): `${JNISCTP_USRSCTP_DIR}`")
 message(STATUS "javah headers directory (JNISCTP_JNI_HEADERS_DIR): `${JNISCTP_JNI_HEADERS_DIR}`")
@@ -34,7 +39,7 @@ find_library(USRSCTP_LIB usrsctp "${JNISCTP_USRSCTP_DIR}/lib")
 
 # SETTINGS FOR UNIX COMPILER
 if (CMAKE_C_COMPILER_ID MATCHES "Clang" OR CMAKE_C_COMPILER_ID MATCHES "AppleClang" OR CMAKE_C_COMPILER_ID MATCHES "GNU")
-	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c99 -pedantic -Wall -Wextra")
+	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -pedantic -Wall -Wextra")
 endif ()
 
 # SETTINGS FOR VISUAL STUDIO COMPILER
