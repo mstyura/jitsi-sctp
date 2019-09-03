@@ -18,7 +18,9 @@
                 </os>
             </activation>
             <properties>
-                <osAlias>darwin</osAlias>
+                <os_alias>darwin</os_alias>
+                <cmake_c_flags>-DCMAKE_C_FLAGS='-fno-omit-frame-pointer -fno-optimize-sibling-calls'</cmake_c_flags>
+                <cmake_generator_platform/>
             </properties>
         </profile>
         <profile>
@@ -30,7 +32,9 @@
                 </os>
             </activation>
             <properties>
-                <osAlias>linux</osAlias>
+                <os_alias>linux</os_alias>
+                <cmake_c_flags>-DCMAKE_C_FLAGS='-fno-omit-frame-pointer -fno-optimize-sibling-calls'</cmake_c_flags>
+                <cmake_generator_platform/>
             </properties>
         </profile>
         <profile>
@@ -41,7 +45,9 @@
                 </os>
             </activation>
             <properties>
-                <osAlias>windows</osAlias>
+                <os_alias>windows</os_alias>
+                <cmake_generator_platform>-DCMAKE_GENERATOR_PLATFORM=x64</cmake_generator_platform>
+                <cmake_c_flags/>
             </properties>
         </profile>
     </profiles>

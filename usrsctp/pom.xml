@@ -29,30 +29,6 @@
     <!-- usrsctp is only compiled if '-DbuildSctp' is passed -->
     <profiles>
         <profile>
-            <id>windows-specific-cmake-properties</id>
-            <activation>
-                <os>
-                    <family>windows</family>
-                </os>
-            </activation>
-            <properties>
-                <cmake_generator_platform>-DCMAKE_GENERATOR_PLATFORM=x64</cmake_generator_platform>
-                <cmake_c_flags/>
-            </properties>
-        </profile>
-        <profile>
-            <id>linux-specific-cmake-properties</id>
-            <activation>
-                <os>
-                    <family>unix</family>
-                </os>
-            </activation>
-            <properties>
-                <cmake_c_flags>-DCMAKE_C_FLAGS='-fno-omit-frame-pointer -fno-optimize-sibling-calls'</cmake_c_flags>
-                <cmake_generator_platform/>
-            </properties>
-        </profile>
-        <profile>
             <id>build usrsctp</id>
             <activation>
                 <property>
