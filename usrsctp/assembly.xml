@@ -6,7 +6,7 @@
     </formats>
     <fileSets>
         <fileSet>
-            <directory>target/usrsctp_cmake/install/lib</directory>
+            <directory>${usrsctp_install_dir}/lib</directory>
             <includes>
                 <include>*.lib</include>
                 <include>*.a</include>
@@ -14,7 +14,7 @@
             <outputDirectory>lib</outputDirectory>
         </fileSet>
         <fileSet>
-            <directory>target/usrsctp_cmake/install/include</directory>
+            <directory>${usrsctp_install_dir}/include</directory>
             <includes>
                 <include>*.h</include>
             </includes>
