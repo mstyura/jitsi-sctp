@@ -20,9 +20,11 @@
     <name>usrsctp JNI wrapper (native code)</name>
 
     <properties>
-        <usrsctp_dir>${project.build.directory}/usrsctp</usrsctp_dir>
-        <jnsctp_build_dir>${project.build.directory}/jnsctp_cmake</jnsctp_build_dir>
+        <usrsctp_prebuilt_dir>${project.build.directory}/usrsctp_prebuilt/${maven_platform_classifier}</usrsctp_prebuilt_dir>
+        <jnisctp_build_dir>${project.build.directory}/jnisctp_cmake/${maven_platform_classifier}</jnisctp_build_dir>
+        <jnisctp_install_dir>${project.build.directory}/jnisctp/install/lib/${maven_platform_classifier}</jnisctp_install_dir>
         <javah_output_dir>${project.build.directory}/native/javah</javah_output_dir>
+        <jniwrapper_native_classifier>${maven_platform_classifier}</jniwrapper_native_classifier>
     </properties>
 
     <profiles>
@@ -30,7 +32,7 @@
             <!-- This profile is activated when the system property 'buildNativeWrapper' is defined (i.e. via
             passing -DbuildNativeWrapper to maven).  It adds a dependency on the usrsctp jar (since we'll need
             the built libraries and include headers from it) and recompiles the native jniwrapper code -->
-            <id>rebuild-native-wrapper</id>
+            <id>build-native-wrapper</id>
             <activation>
                 <property>
                     <name>buildNativeWrapper</name>
@@ -41,10 +43,8 @@
                     <groupId>${project.groupId}</groupId>
                     <artifactId>usrsctp</artifactId>
                     <version>${project.version}</version>
-                    <!-- This id matches the one we used in javalibs.xml for the usrsctp.  It's where we packaged up
-                    the usrsctp libs and includes -->
-                    <classifier>libs</classifier>
-                    <type>zip</type>
+                    <classifier>${jniwrapper_native_classifier}</classifier>
+                    <type>jar</type>
                 </dependency>
             </dependencies>
             <build>
@@ -61,8 +61,9 @@
                                     <goal>unpack-dependencies</goal>
                                 </goals>
                                 <configuration>
-                                    <includeTypes>zip</includeTypes>
-                                    <outputDirectory>${usrsctp_dir}</outputDirectory>
+                                    <includeTypes>jar</includeTypes>
+                                    <includeArtifactIds>usrsctp</includeArtifactIds>
+                                    <outputDirectory>${usrsctp_prebuilt_dir}</outputDirectory>
                                 </configuration>
                             </execution>
                         </executions>
@@ -102,7 +103,7 @@
                                     <arguments>
                                         <argument>-E</argument>
                                         <argument>make_directory</argument>
-                                        <argument>${jnsctp_build_dir}</argument>
+                                        <argument>${jnisctp_build_dir}</argument>
                                     </arguments>
                                 </configuration>
                             </execution>
@@ -117,7 +118,7 @@
                                     <arguments>
                                         <argument>-E</argument>
                                         <argument>remove_directory</argument>
-                                        <argument>${jnsctp_build_dir}</argument>
+                                        <argument>${jnisctp_build_dir}</argument>
                                     </arguments>
                                 </configuration>
                             </execution>
@@ -128,14 +129,14 @@
                                     <goal>exec</goal>
                                 </goals>
                                 <configuration>
-                                    <workingDirectory>${jnsctp_build_dir}</workingDirectory>
+                                    <workingDirectory>${jnisctp_build_dir}</workingDirectory>
                                     <executable>cmake</executable>
                                     <arguments>
                                         <argument>-DCMAKE_BUILD_TYPE=RelWithDebInfo</argument>
                                         <argument>-DCMAKE_POSITION_INDEPENDENT_CODE=ON</argument>
                                         <argument>-DJNISCTP_JNI_HEADERS_DIR="${javah_output_dir}"</argument>
-                                        <argument>-DJNISCTP_USRSCTP_DIR="${usrsctp_dir}/usrsctp-${project.version}"</argument>
-                                        <argument>-DCMAKE_INSTALL_PREFIX="${project.basedir}/src/main/resources/lib/${os_alias}/"</argument>
+                                        <argument>-DJNISCTP_USRSCTP_DIR="${usrsctp_prebuilt_dir}"</argument>
+                                        <argument>-DCMAKE_INSTALL_PREFIX="${jnisctp_install_dir}"</argument>
                                         <argument>${cmake_c_flags}</argument>
                                         <argument>${cmake_generator_platform}</argument>
                                         <argument>${basedir}/src</argument>
@@ -149,7 +150,7 @@
                                     <goal>exec</goal>
                                 </goals>
                                 <configuration>
-                                    <workingDirectory>${jnsctp_build_dir}</workingDirectory>
+                                    <workingDirectory>${jnisctp_build_dir}</workingDirectory>
                                     <executable>cmake</executable>
                                     <arguments>
                                         <argument>--build</argument>
@@ -161,6 +162,34 @@
                                         <argument>--clean-first</argument>
                                     </arguments>
                                 </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-jar-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>default-jar</id>
+                                <phase>none</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-assembly-plugin</artifactId>
+                        <configuration>
+                            <descriptors>
+                                <descriptor>assembly.xml</descriptor>
+                            </descriptors>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>make-assembly</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>single</goal>
+                                </goals>
                             </execution>
                         </executions>
                     </plugin>
@@ -193,7 +222,7 @@
                                     <goal>exec</goal>
                                 </goals>
                                 <configuration>
-                                    <workingDirectory>${jnsctp_build_dir}</workingDirectory>
+                                    <workingDirectory>${jnisctp_build_dir}</workingDirectory>
                                     <executable>cmake</executable>
                                     <arguments>
                                         <argument>--build</argument>

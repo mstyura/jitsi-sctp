@@ -25,7 +25,7 @@ message(STATUS "javah headers directory (JNISCTP_JNI_HEADERS_DIR): ${JNISCTP_JNI
 
 find_package(JNI)
 find_package(Threads)
-find_library(USRSCTP_LIB usrsctp ${JNISCTP_USRSCTP_DIR}/lib)
+find_library(USRSCTP_LIB usrsctp "${JNISCTP_USRSCTP_DIR}/lib")
 
 
 #################################################
@@ -85,7 +85,7 @@ target_link_libraries(${JNI_TARGET_NAME} PRIVATE
 target_include_directories(${JNI_TARGET_NAME} PRIVATE
     ${JNI_INCLUDE_DIRS}
     ${JNISCTP_JNI_HEADERS_DIR}
-    ${JNISCTP_USRSCTP_DIR}/include
+    "${JNISCTP_USRSCTP_DIR}/include"
 )
 
 

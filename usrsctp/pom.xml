@@ -15,15 +15,15 @@
     <name>usrsctp native library</name>
 
     <!-- This module handles the following:
-    1) compiles usrsctp with cmake
-    2) assemble the built libs and headers into a zip file that can be depended on by others (see the jniwrapper-native
-    module)
+    1) compiles usrsctp with CMake for current platform;
+    2) assemble headers and static library into platform-specific artifact, which later used by jniwrapper-native
+       to provide final shared library with JNI functions.
     It assumes:
-    1) cmake and C compiler and linker are installed on traget system -->
+    1) CMake and C compiler and linker are installed on target system -->
 
     <properties>
         <usrsctp_source_dir>${basedir}/usrsctp</usrsctp_source_dir>
-        <usrsctp_cmake_dir>${build.directory}/usrsctp_cmake</usrsctp_cmake_dir>
+        <usrsctp_cmake_dir>${project.build.directory}/usrsctp_cmake/${maven_platform_classifier}</usrsctp_cmake_dir>
     </properties>
 
     <!-- usrsctp is only compiled if '-DbuildSctp' is passed -->
@@ -95,7 +95,6 @@
                                         <argument>RelWithDebInfo</argument>
                                         <argument>--target</argument>
                                         <argument>install</argument>
-                                        <argument>--clean-first</argument>
                                     </arguments>
                                 </configuration>
                             </execution>
@@ -118,12 +117,21 @@
                         </executions>
                     </plugin>
                     <plugin>
+                        <artifactId>maven-jar-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>default-jar</id>
+                                <phase>none</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-assembly-plugin</artifactId>
                         <configuration>
                             <descriptors>
                                 <!-- Assembly contents are defined in this file -->
-                                <descriptor>javalibs.xml</descriptor>
+                                <descriptor>assembly.xml</descriptor>
                             </descriptors>
                         </configuration>
                         <executions>
@@ -136,6 +144,27 @@
                                 </goals>
                             </execution>
                         </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>pl.project13.maven</groupId>
+                        <artifactId>git-commit-id-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>git-infos</id>
+                                <goals>
+                                    <goal>revision</goal>
+                                    <goal>validateRevision</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <dotGitDirectory>${usrsctp_source_dir}/.git</dotGitDirectory>
+                            <generateGitPropertiesFile>true</generateGitPropertiesFile>
+                            <excludeProperties>
+                                <excludeProperty>git.user.*</excludeProperty>
+                                <excludeProperty>git.build.user.*</excludeProperty>
+                            </excludeProperties>
+                        </configuration>
                     </plugin>
                 </plugins>
             </build>
