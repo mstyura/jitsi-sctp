@@ -15,7 +15,7 @@ Because JNI has a complex build process multiplied by being platform dependent, 
 
 * The `usrsctp` module handles the compilation of the [`usrsctp`](https://github.com/sctplab/usrsctp).
 This maven module produces platform specific artifact having pre-compiled `usrsctp` static library and corresponding `C` API-header.
-`mvn package -DbuildSctp -f usrsctp/pom.xml` will create a jar that will include the native library and the necessary include headers for current platform.
+`mvn package -DbuildSctp -f pom.xml -pl org.jitsi:usrsctp -amd` will create a jar that will include the native library and the necessary include headers for current platform.
 Resulting artifact has target platform set as [maven classifier](https://maven.apache.org/pom.html), e.g. `usrsctp-1.0-SNAPSHOT-windows.jar` or `usrsctp-1.0-SNAPSHOT-linux.jar`
 
 * The `jniwrapper` module has 3 nested modules:
@@ -57,7 +57,7 @@ jitsi-sctp/usrsctp/usrsctp>
 ```
 * Produce and install new platform specific `usrsctp` and `jniwrapper-native` artifacts 
 ```
-jitsi-sctp> mvn clean package install -DbuildSctp -DbuildJniSctp -f jniwrapper/native/pom.xml
+jitsi-sctp> mvn clean package install -DbuildSctp -DbuildJniSctp -f pom.xml --projects org.jitsi:usrsctp,org.jitsi:jniwrapper-native -amd
 ```
 * Once `usrsctp` and `jniwrapper-native` artifacts rebuilt and published to [Maven repository](https://github.com/jitsi/jitsi-maven-repository/) for each supported platform (`Windows`, `Linux`, `Mac`) an updated **fat jar** could be build and installed with following command:
 ```
