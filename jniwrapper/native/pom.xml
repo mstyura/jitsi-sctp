@@ -5,8 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <!-- This module is responsible for building the final jnisctp native shared library: that is the one that will
-     be loaded via System.loadLibrary(...) in the java code.  The library is placed in the 'target' output
-     directory `target/jnisctp/install/lib/`. Note that when building the jar, it rely on platform specific usrsctp
+     be loaded via System.loadLibrary(...) in the java code.  The library is placed in the `target/jnisctp/install/lib/`
+     output directory. Note that when building the jar, it rely on platform specific usrsctp
      which must be built and deployed in advance -->
     <parent>
         <groupId>org.jitsi</groupId>
