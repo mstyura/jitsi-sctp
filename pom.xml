@@ -42,7 +42,7 @@
             </activation>
             <properties>
                 <os_alias>linux</os_alias>
-                <cmake_c_flags>-DCMAKE_C_FLAGS='-fno-omit-frame-pointer -fno-optimize-sibling-calls'</cmake_c_flags>
+                <cmake_c_flags>-DCMAKE_C_FLAGS='-fno-omit-frame-pointer -fno-optimize-sibling-calls -Wno-address-of-packed-member'</cmake_c_flags>
                 <cmake_generator_platform/>
                 <maven_platform_classifier>linux</maven_platform_classifier>
             </properties>
