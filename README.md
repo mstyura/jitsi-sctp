@@ -46,24 +46,28 @@ To re-build native libraries cross-platform [`CMake`](https://cmake.org/) build 
 
 On each supported native platform following commands must be executed to produce platform specific `usrsctp` and `jniwrapper-native` artifacts:
 
-* Clone the project with `git clone --recurse-submodules <jitsi-sctp-git-url>`.
+1. Clone the project with `git clone --recurse-submodules <jitsi-sctp-git-url>`.
 ```
 > git clone --recurse-submodules https://github.com/jitsi/jitsi-sctp.git jitsi-sctp
 ```
-* [Optional] initialize the [usrsctp](https://github.com/sctplab/usrsctp) submodule with `git submodule update --init --recursive`:
+
+2. [Optional] initialize the [usrsctp](https://github.com/sctplab/usrsctp) submodule with `git submodule update --init --recursive`:
 ```
 jitsi-sctp/usrsctp/usrsctp>
 (check out whatever hash/version you want in case it distinct from what is defined by git submodule)
 ```
-* Produce and install new platform specific `usrsctp` and `jniwrapper-native` artifacts 
+
+3. Produce and install new platform specific `usrsctp` and `jniwrapper-native` artifacts 
 ```
 jitsi-sctp> mvn clean package install -DbuildSctp -DbuildJniSctp -f pom.xml --projects org.jitsi:usrsctp,org.jitsi:jniwrapper-native -am
 ```
-* Once `usrsctp` and `jniwrapper-native` artifacts rebuilt and published to [Maven repository](https://github.com/jitsi/jitsi-maven-repository/) for each supported platform (`Windows`, `Linux`, `Mac`) an updated **fat jar** could be build and installed with following command:
-```
-jitsi-sctp>mvn clean package install -DbuildXPlatJar -f pom.xml
-```
-* Regular `jar` with native `jnisctp` bundled only for current platform can be build and installed with:
+
+4. Regular `jitsi-sctp` artifact with native `jnisctp` bundled only for current platform can be build and installed with:
 ```
 jitsi-sctp>mvn clean package install -f pom.xml
+```
+
+5. Once `usrsctp` and `jniwrapper-native` artifacts rebuilt and published to [Maven repository](https://github.com/jitsi/jitsi-maven-repository/) for each supported platform (`Windows`, `Linux`, `Mac`) with steps `1-3`, an updated **fat jar** could be build and installed with following command:
+```
+jitsi-sctp>mvn clean package install -DbuildXPlatJar -f pom.xml
 ```
