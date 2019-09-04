@@ -15,7 +15,7 @@ Because JNI has a complex build process multiplied by being platform dependent, 
 
 * The `usrsctp` module handles the compilation of the [`usrsctp`](https://github.com/sctplab/usrsctp).
 This maven module produces platform specific artifact having pre-compiled `usrsctp` static library and corresponding `C` API-header.
-`mvn package -DbuildSctp -f pom.xml -pl org.jitsi:usrsctp -amd` will create a jar that will include the native library and the necessary include headers for current platform.
+`mvn package -DbuildSctp -f pom.xml -pl org.jitsi:usrsctp -am` will create a jar that will include the native library and the necessary include headers for current platform.
 Resulting artifact has target platform set as [maven classifier](https://maven.apache.org/pom.html), e.g. `usrsctp-1.0-SNAPSHOT-windows.jar` or `usrsctp-1.0-SNAPSHOT-linux.jar`
 
 * The `jniwrapper` module has 3 nested modules:
