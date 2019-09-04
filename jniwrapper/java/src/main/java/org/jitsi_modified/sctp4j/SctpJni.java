@@ -23,6 +23,7 @@ public class SctpJni {
         // Load the native library
         loadJniLibrary();
     }
+
     private static void loadJniLibrary() {
         try {
             try {

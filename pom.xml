@@ -26,7 +26,6 @@
                 </os>
             </activation>
             <properties>
-                <os_alias>darwin</os_alias>
                 <cmake_c_flags>-DCMAKE_C_FLAGS='-fno-omit-frame-pointer -fno-optimize-sibling-calls'</cmake_c_flags>
                 <cmake_generator_platform/>
                 <maven_platform_classifier>darwin</maven_platform_classifier>
@@ -41,7 +40,6 @@
                 </os>
             </activation>
             <properties>
-                <os_alias>linux</os_alias>
                 <cmake_c_flags>-DCMAKE_C_FLAGS='-fno-omit-frame-pointer -fno-optimize-sibling-calls -Wno-format-truncation -Wno-address-of-packed-member'</cmake_c_flags>
                 <cmake_generator_platform/>
                 <maven_platform_classifier>linux</maven_platform_classifier>
@@ -55,7 +53,6 @@
                 </os>
             </activation>
             <properties>
-                <os_alias>windows</os_alias>
                 <cmake_generator_platform>-DCMAKE_GENERATOR_PLATFORM=x64</cmake_generator_platform>
                 <cmake_c_flags/>
                 <maven_platform_classifier>windows</maven_platform_classifier>

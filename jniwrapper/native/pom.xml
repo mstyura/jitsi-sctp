@@ -4,11 +4,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <!-- This module is responsible for building the final usrsctp native shared library: that is the one that will
+    <!-- This module is responsible for building the final jnisctp native shared library: that is the one that will
      be loaded via System.loadLibrary(...) in the java code.  The library is placed in the 'target' output
-     directory and will be named "libjnisctp.jnilib".  Note that when building the jar, it uses the libs in
-     the prebuilt lib directory (src/main/resources/lib/), so if you want to use the jnilib you just built, you'll
-     need to copy it into the right place (correct platform subdir) in that prebuilt lib directory -->
+     directory `target/jnisctp/install/lib/`. Note that when building the jar, it rely on platform specific usrsctp
+     which must be built and deployed in advance -->
     <parent>
         <groupId>org.jitsi</groupId>
         <artifactId>jniwrapper</artifactId>
@@ -30,8 +29,8 @@
 
     <profiles>
         <profile>
-            <!-- This profile is activated when the system property 'buildJNISctp' is defined (i.e. via
-            passing -DbuildJNISctp to maven).  It adds a dependency on the usrsctp jar (since we'll need
+            <!-- This profile is activated when the system property 'buildJniSctp' is defined (i.e. via
+            passing -DbuildJniSctp to maven).  It adds a dependency on the usrsctp jar (since we'll need
             the built libraries and include headers from it) and recompiles the native jniwrapper code -->
             <id>build-jni-sctp</id>
             <activation>
