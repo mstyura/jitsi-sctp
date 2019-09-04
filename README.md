@@ -57,7 +57,7 @@ jitsi-sctp/usrsctp/usrsctp>
 ```
 * Produce and install new platform specific `usrsctp` and `jniwrapper-native` artifacts 
 ```
-jitsi-sctp> mvn clean package install -DbuildSctp -DbuildJniSctp -f pom.xml --projects org.jitsi:usrsctp,org.jitsi:jniwrapper-native -amd
+jitsi-sctp> mvn clean package install -DbuildSctp -DbuildJniSctp -f pom.xml --projects org.jitsi:usrsctp,org.jitsi:jniwrapper-native -am
 ```
 * Once `usrsctp` and `jniwrapper-native` artifacts rebuilt and published to [Maven repository](https://github.com/jitsi/jitsi-maven-repository/) for each supported platform (`Windows`, `Linux`, `Mac`) an updated **fat jar** could be build and installed with following command:
 ```
