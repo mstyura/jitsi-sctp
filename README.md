@@ -8,28 +8,29 @@ Because JNI has a complex build process multiplied by being platform dependent, 
     |-- jniwrapper
     |   |-- java
     |   |-- jnilib
-    |   `-- native (produces platform specific)
+    |   `-- native (produces platform specific artifact)
     |-- sctp
-    `-- usrsctp (produces platform specific)
+    `-- usrsctp (produces platform specific artifact)
 ```
 
 * The `usrsctp` module handles the compilation of the [`usrsctp`](https://github.com/sctplab/usrsctp).
 This maven module produces platform specific artifact having pre-compiled `usrsctp` static library and corresponding `C` API-header.
 `mvn package -DbuildSctp -f usrsctp/pom.xml` will create a jar that will include the native library and the necessary include headers for current platform.
-Resulting artifact has target platform set as [maven classifier](https://maven.apache.org/pom.html).
+Resulting artifact has target platform set as [maven classifier](https://maven.apache.org/pom.html), e.g. `usrsctp-1.0-SNAPSHOT-windows.jar` or `usrsctp-1.0-SNAPSHOT-linux.jar`
 
 * The `jniwrapper` module has 3 nested modules:
   * The `jniwrapper-java` module includes the Java portion of the JNI API and interacts with the native code.
-  * The `jniwrapper-native` module contains the `C` portion of the JNI API that bridges the Java and the `usrsctp` native lib.
-  It depends on both the `usrsctp` module (because it needs the built library and include headers) and the `jniwrapper-java` module (to generate the header file to match the `C` implementation from the Java file).
+  * The `jniwrapper-native` module contains the `C` portion of the JNI API that bridges the Java and the [`usrsctp`](https://github.com/sctplab/usrsctp) native lib.
+  It depends on both the `usrsctp` module (because it needs the pre-built `usrsctp` static library and include headers) and the `jniwrapper-java` module (to generate the `JNI` header file to match the `C` implementation from the Java file).
   The `compile` build phase will create a new jni lib in `target/jnisctp/install/lib`.
-  The `package` build phase will create a platform specific `jar` that includes the java code and the native library for current platform.
+  The `package` build phase will create a platform specific `jar` that includes the java code and the shared native library for current platform.
   It is intended that the JNI libs are built for each platform ahead of time and published ahead of time to `Maven` repository as platform specific artifacts.
-  * The `jnilib` maven module combines the `jniwrapper-java` and `jniwrapper-native` `jars` into a **fat jar** which includes the Java API and the native JNI libraries that will be loaded at runtime.
-  By default `jnilib` only include native libraries for current platform.
-  To have universal `jnilib` suitable to run on any supported platform it necessary to build and publish platform-specific `jniwrapper-native` artifact for all supported platforms in advance and then build `jnilib` with `mvn package -DbuildXPlatJar -f jniwrapper/jnilib/pom.xml`.
+  * The `jnilib` maven module combines the `jniwrapper-java` and `jniwrapper-native` into a single `jar` which includes the Java API and the native JNI library that will be loaded at runtime.
+  By default `jnilib` only include `jnisctp` native library only for current platform.
+  To have universal (**fat jar**) `jnilib` suitable to run on any supported platform it necessary to build and publish platform-specific `jniwrapper-native` artifacts for all supported platforms in advance and then build `jnilib` with `mvn package -DbuildXPlatJar -f jniwrapper/jnilib/pom.xml`.
 
-* The `sctp` module contains the library on top of the JNI code.  The jar built by this is what is intended to be used by other code.
+* The `sctp` module contains the Java library on top of the JNI code. 
+The jar built by this is what is intended to be used by other code.
 
 ### Building the jar files
 * Clone the project and initialize [`usrsctp`](https://github.com/sctplab/usrsctp) git submodule.
@@ -38,10 +39,10 @@ Resulting artifact has target platform set as [maven classifier](https://maven.a
 This will install all the jars built by the project.  Depend on the `org.jitsi:sctp` artifact to use `jitsi-sctp` in your code.
 
 ### (Re)Building a new JNI lib
-The JNI lib will need to be rebuilt if there is a change in the `usrsctp` version or a change in the JNI wrapper `C` file.
-Chanees in `usrsctp` handled by re-compiling `usrsctp` artifact from corresponding maven module.
-CHanges in JNI wrapper `C` code are handled by recompiling `jniwrapper-native` artifact from corresponding maven module.
-To re-build native libraries [`CMake`](https://cmake.org/) build tool, `C` compiler and linker and `JDK` must be installed on system used to build.
+The JNI lib will need to be rebuilt if there is a change in the [`usrsctp`](https://github.com/sctplab/usrsctp) version or a change in the JNI wrapper `C` file.
+Chanees in [`usrsctp`](https://github.com/sctplab/usrsctp) handled by re-compiling `usrsctp` artifact from corresponding maven module.
+Changes in JNI wrapper `C` code are handled by recompiling `jniwrapper-native` artifact from corresponding maven module.
+To re-build native libraries cross-platform [`CMake`](https://cmake.org/) build tool, `C` compiler and linker and `JDK` must be installed on system used to build.
 
 On each supported native platform following commands must be executed to produce platform specific `usrsctp` and `jniwrapper-native` artifacts:
 
@@ -51,7 +52,7 @@ On each supported native platform following commands must be executed to produce
 ```
 * [Optional] initialize the [usrsctp](https://github.com/sctplab/usrsctp) submodule with `git submodule update --init --recursive`:
 ```
-jitsi-sctp/usrsctp>
+jitsi-sctp/usrsctp/usrsctp>
 (check out whatever hash/version you want in case it distinct from what is defined by git submodule)
 ```
 * Produce and install new platform specific `usrsctp` and `jniwrapper-native` artifacts 
