@@ -55,7 +55,7 @@
                                     <arguments>
                                         <argument>-E</argument>
                                         <argument>make_directory</argument>
-                                        <argument>${usrsctp_cmake_dir}/install</argument>
+                                        <argument>${usrsctp_cmake_dir}</argument>
                                     </arguments>
                                 </configuration>
                             </execution>
