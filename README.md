@@ -63,3 +63,7 @@ jitsi-sctp> mvn clean package install -DbuildSctp -DbuildJniSctp -f pom.xml --pr
 ```
 jitsi-sctp>mvn clean package install -DbuildXPlatJar -f pom.xml
 ```
+* Regular `jar` with native `jnisctp` bundled only for current platform can be build and installed with:
+```
+jitsi-sctp>mvn clean package install -f pom.xml
+```
