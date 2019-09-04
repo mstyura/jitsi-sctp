@@ -118,15 +118,6 @@
                         </executions>
                     </plugin>
                     <plugin>
-                        <artifactId>maven-jar-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>default-jar</id>
-                                <phase>none</phase>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-assembly-plugin</artifactId>
                         <configuration>
@@ -146,29 +137,43 @@
                             </execution>
                         </executions>
                     </plugin>
-                    <plugin>
-                        <groupId>pl.project13.maven</groupId>
-                        <artifactId>git-commit-id-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>git-infos</id>
-                                <goals>
-                                    <goal>revision</goal>
-                                    <goal>validateRevision</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                        <configuration>
-                            <dotGitDirectory>${usrsctp_source_dir}/.git</dotGitDirectory>
-                            <generateGitPropertiesFile>true</generateGitPropertiesFile>
-                            <excludeProperties>
-                                <excludeProperty>git.user.*</excludeProperty>
-                                <excludeProperty>git.build.user.*</excludeProperty>
-                            </excludeProperties>
-                        </configuration>
-                    </plugin>
                 </plugins>
             </build>
         </profile>
     </profiles>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>pl.project13.maven</groupId>
+                <artifactId>git-commit-id-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>git-infos</id>
+                        <goals>
+                            <goal>revision</goal>
+                            <goal>validateRevision</goal>
+                        </goals>
+                        <phase>validate</phase>
+                    </execution>
+                </executions>
+                <configuration>
+                    <dotGitDirectory>${usrsctp_source_dir}/.git</dotGitDirectory>
+                    <generateGitPropertiesFile>true</generateGitPropertiesFile>
+                    <excludeProperties>
+                        <excludeProperty>git.user.*</excludeProperty>
+                        <excludeProperty>git.build.user.*</excludeProperty>
+                    </excludeProperties>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-jar-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>default-jar</id>
+                        <phase>none</phase>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>
