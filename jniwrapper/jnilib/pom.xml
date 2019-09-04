@@ -16,7 +16,7 @@
     </parent>
 
     <artifactId>jnilib</artifactId>
-
+    <packaging>pom</packaging>
     <profiles>
         <profile>
             <id>build-jar-with-all-native-libraries</id>
@@ -70,15 +70,6 @@
 
     <build>
         <plugins>
-            <plugin>
-                <artifactId>maven-jar-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>default-jar</id>
-                        <phase>none</phase>
-                    </execution>
-                </executions>
-            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
