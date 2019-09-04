@@ -13,6 +13,7 @@
 
     <artifactId>usrsctp</artifactId>
     <name>usrsctp native library</name>
+    <packaging>pom</packaging>
 
     <!-- This module handles the following:
     1) compiles usrsctp with CMake for current platform;
@@ -164,15 +165,6 @@
                         <excludeProperty>git.build.user.*</excludeProperty>
                     </excludeProperties>
                 </configuration>
-            </plugin>
-            <plugin>
-                <artifactId>maven-jar-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>default-jar</id>
-                        <phase>none</phase>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>

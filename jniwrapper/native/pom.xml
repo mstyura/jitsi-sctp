@@ -18,6 +18,7 @@
 
     <artifactId>jniwrapper-native</artifactId>
     <name>usrsctp JNI wrapper (native code)</name>
+    <packaging>pom</packaging>
 
     <properties>
         <usrsctp_prebuilt_dir>${project.build.directory}/usrsctp_prebuilt/${maven_platform_classifier}</usrsctp_prebuilt_dir>
@@ -29,13 +30,13 @@
 
     <profiles>
         <profile>
-            <!-- This profile is activated when the system property 'buildNativeWrapper' is defined (i.e. via
-            passing -DbuildNativeWrapper to maven).  It adds a dependency on the usrsctp jar (since we'll need
+            <!-- This profile is activated when the system property 'buildJNISctp' is defined (i.e. via
+            passing -DbuildJNISctp to maven).  It adds a dependency on the usrsctp jar (since we'll need
             the built libraries and include headers from it) and recompiles the native jniwrapper code -->
-            <id>build-native-wrapper</id>
+            <id>build-jni-sctp</id>
             <activation>
                 <property>
-                    <name>buildNativeWrapper</name>
+                    <name>buildJniSctp</name>
                 </property>
             </activation>
             <dependencies>
@@ -74,7 +75,7 @@
                         <extensions>true</extensions>
                         <executions>
                             <execution>
-                                <id>java-compile</id>
+                                <id>javah-generate</id>
                                 <phase>generate-sources</phase>
                                 <goals>
                                     <goal>javah</goal>
@@ -163,15 +164,24 @@
                                     </arguments>
                                 </configuration>
                             </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-jar-plugin</artifactId>
-                        <executions>
                             <execution>
-                                <id>default-jar</id>
-                                <phase>none</phase>
+                                <id>deploy-jni-sctp</id>
+                                <phase>prepare-package</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <workingDirectory>${jnisctp_build_dir}</workingDirectory>
+                                    <executable>cmake</executable>
+                                    <arguments>
+                                        <argument>--build</argument>
+                                        <argument>.</argument>
+                                        <argument>--config</argument>
+                                        <argument>RelWithDebInfo</argument>
+                                        <argument>--target</argument>
+                                        <argument>install</argument>
+                                    </arguments>
+                                </configuration>
                             </execution>
                         </executions>
                     </plugin>
@@ -190,49 +200,6 @@
                                 <goals>
                                     <goal>single</goal>
                                 </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-        <profile>
-            <!-- When a new jnilib is built, it is put in the build directory of this
-            project (target/).  But when a new jniwrapper is built, it uses the prebuilt jnilibs
-            in src/main/resources/lib (we use these prebuilt libs so they don't have to be rebuilt
-            every time).  If you want to use the newly built jnilib in the building of the jniwrapper,
-            you can pass 'deployNewJnilib' to maven (-DdeployNewJnilib) and it will copy the newly
-            built jnilib to the proper directory in src/main/resources/lib) -->
-            <id>deploy-built-jnilib</id>
-            <activation>
-                <property>
-                    <name>deployNewJnilib</name>
-                </property>
-            </activation>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>exec-maven-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>deploy-jnilib</id>
-                                <phase>prepare-package</phase>
-                                <goals>
-                                    <goal>exec</goal>
-                                </goals>
-                                <configuration>
-                                    <workingDirectory>${jnisctp_build_dir}</workingDirectory>
-                                    <executable>cmake</executable>
-                                    <arguments>
-                                        <argument>--build</argument>
-                                        <argument>.</argument>
-                                        <argument>--config</argument>
-                                        <argument>RelWithDebInfo</argument>
-                                        <argument>--target</argument>
-                                        <argument>install</argument>
-                                    </arguments>
-                                </configuration>
                             </execution>
                         </executions>
                     </plugin>
