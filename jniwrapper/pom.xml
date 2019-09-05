@@ -11,6 +11,10 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
+    <properties>
+        <usrsctp_commit_id>7cd64a3</usrsctp_commit_id>
+    </properties>
+
     <artifactId>jniwrapper</artifactId>
     <packaging>pom</packaging>
 

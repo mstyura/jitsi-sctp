@@ -43,7 +43,7 @@
                     <groupId>${project.groupId}</groupId>
                     <artifactId>usrsctp</artifactId>
                     <version>${project.version}</version>
-                    <classifier>${jniwrapper_native_classifier}</classifier>
+                    <classifier>${usrsctp_commit_id}-${jniwrapper_native_classifier}</classifier>
                     <type>jar</type>
                 </dependency>
             </dependencies>
