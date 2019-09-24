@@ -21,9 +21,9 @@
 
     <properties>
         <usrsctp_prebuilt_dir>${project.build.directory}/usrsctp_prebuilt/${maven_platform_classifier}</usrsctp_prebuilt_dir>
+        <jniwrapper_java_headers_dir>${project.build.directory}/jniwrapper_java_headers/</jniwrapper_java_headers_dir>
         <jnisctp_build_dir>${project.build.directory}/jnisctp_cmake/${maven_platform_classifier}</jnisctp_build_dir>
         <jnisctp_install_dir>${project.build.directory}/jnisctp/install/lib/${maven_platform_classifier}</jnisctp_install_dir>
-        <javah_output_dir>${project.build.directory}/native/javah</javah_output_dir>
         <jniwrapper_native_classifier>${maven_platform_classifier}</jniwrapper_native_classifier>
     </properties>
 
@@ -55,7 +55,7 @@
                         <executions>
                             <!-- Unpack header files and libraries for build -->
                             <execution>
-                                <id>unpack</id>
+                                <id>unpack-usrsctp</id>
                                 <phase>generate-sources</phase>
                                 <goals>
                                     <goal>unpack-dependencies</goal>
@@ -66,27 +66,20 @@
                                     <outputDirectory>${usrsctp_prebuilt_dir}</outputDirectory>
                                 </configuration>
                             </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>native-maven-plugin</artifactId>
-                        <extensions>true</extensions>
-                        <executions>
                             <execution>
-                                <id>javah-generate</id>
+                                <id>unpack-jniwrapper-java-headers</id>
                                 <phase>generate-sources</phase>
                                 <goals>
-                                    <goal>javah</goal>
+                                    <goal>unpack-dependencies</goal>
                                 </goals>
+                                <configuration>
+                                    <includeTypes>jar</includeTypes>
+                                    <includeArtifactIds>jniwrapper-java</includeArtifactIds>
+                                    <includes>**/*.h</includes>
+                                    <outputDirectory>${jniwrapper_java_headers_dir}</outputDirectory>
+                                </configuration>
                             </execution>
                         </executions>
-                        <configuration>
-                            <javahClassNames>
-                                <javahClassName>org.jitsi_modified.sctp4j.SctpJni</javahClassName>
-                            </javahClassNames>
-                            <javahOutputDirectory>${javah_output_dir}</javahOutputDirectory>
-                        </configuration>
                     </plugin>
                     <plugin>
                         <groupId>org.codehaus.mojo</groupId>
@@ -134,7 +127,7 @@
                                     <arguments>
                                         <argument>-DCMAKE_BUILD_TYPE=RelWithDebInfo</argument>
                                         <argument>-DCMAKE_POSITION_INDEPENDENT_CODE=ON</argument>
-                                        <argument>-DJNISCTP_JNI_HEADERS_DIR=${javah_output_dir}</argument>
+                                        <argument>-DJNISCTP_JNI_HEADERS_DIR=${jniwrapper_java_headers_dir}/native/headers</argument>
                                         <argument>-DJNISCTP_USRSCTP_DIR=${usrsctp_prebuilt_dir}</argument>
                                         <argument>-DCMAKE_INSTALL_PREFIX=${jnisctp_install_dir}</argument>
                                         <argument>${cmake_c_flags}</argument>

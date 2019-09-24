@@ -14,6 +14,10 @@
     <artifactId>jniwrapper-java</artifactId>
     <name>usrsctp JNI wrapper (Java code)</name>
 
+    <properties>
+        <native_headers_dir>${project.build.outputDirectory}/native/headers</native_headers_dir>
+    </properties>
+
     <build>
         <plugins>
             <plugin>
@@ -22,6 +26,10 @@
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
+                    <compilerArgs>
+                        <compilerArg>-h</compilerArg>
+                        <compilerArg>${native_headers_dir}</compilerArg>
+                    </compilerArgs>
                 </configuration>
             </plugin>
         </plugins>
