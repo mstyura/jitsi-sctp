@@ -27,7 +27,7 @@ Resulting artifact has target platform set as [maven classifier](https://maven.a
   It is intended that the JNI libs are built for each platform ahead of time and published ahead of time to `Maven` repository as platform specific artifacts.
   * The `jnilib` maven module combines the `jniwrapper-java` and `jniwrapper-native` into a single `jar` which includes the Java API and the native JNI library that will be loaded at runtime.
   By default `jnilib` only include `jnisctp` native library only for current platform.
-  To have universal (**fat jar**) `jnilib` suitable to run on any supported platform it necessary to build and publish platform-specific `jniwrapper-native` artifacts for all supported platforms in advance and then build `jnilib` with `mvn package -DbuildXPlatJar -f jniwrapper/jnilib/pom.xml`.
+  To have universal (**fat jar**) `jnilib` suitable to run on any supported platform it necessary to build and publish platform-specific `jniwrapper-native` artifacts for all supported platforms in advance and then build `jnilib` with `mvn package -DbuildXPlatJar -f pom.xml -pl org.jitsi:jnilib -am`.
 
 * The `sctp` module contains the Java library on top of the JNI code. 
 The jar built by this is what is intended to be used by other code.
@@ -40,7 +40,7 @@ This will install all the jars built by the project.  Depend on the `org.jitsi:s
 
 ### (Re)Building a new JNI lib
 The JNI lib will need to be rebuilt if there is a change in the [`usrsctp`](https://github.com/sctplab/usrsctp) version or a change in the JNI wrapper `C` file.
-Chanees in [`usrsctp`](https://github.com/sctplab/usrsctp) handled by re-compiling `usrsctp` artifact from corresponding maven module.
+Changes in [`usrsctp`](https://github.com/sctplab/usrsctp) handled by re-compiling `usrsctp` artifact from corresponding maven module.
 Changes in JNI wrapper `C` code are handled by recompiling `jniwrapper-native` artifact from corresponding maven module.
 To re-build native libraries cross-platform [`CMake`](https://cmake.org/) build tool, `C` compiler and linker and `JDK` must be installed on system used to build.
 
