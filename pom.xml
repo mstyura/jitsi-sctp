@@ -26,7 +26,7 @@
                 </os>
             </activation>
             <properties>
-                <cmake_c_flags>-fno-omit-frame-pointer -fno-optimize-sibling-calls</cmake_c_flags>
+                <cmake_c_flags>-fno-omit-frame-pointer -fno-optimize-sibling-calls -D__FUNCTION__=__func__</cmake_c_flags>
                 <cmake_generator_platform/>
                 <maven_platform_classifier>darwin</maven_platform_classifier>
             </properties>
@@ -40,7 +40,7 @@
                 </os>
             </activation>
             <properties>
-                <cmake_c_flags>-fno-omit-frame-pointer -fno-optimize-sibling-calls -Wno-format-truncation -Wno-address-of-packed-member</cmake_c_flags>
+                <cmake_c_flags>-fno-omit-frame-pointer -fno-optimize-sibling-calls -Wno-format-truncation -Wno-address-of-packed-member -D__FUNCTION__=__func__</cmake_c_flags>
                 <cmake_generator_platform/>
                 <maven_platform_classifier>linux</maven_platform_classifier>
             </properties>
