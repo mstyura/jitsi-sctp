@@ -17,7 +17,7 @@
 
     <artifactId>jniwrapper-native</artifactId>
     <name>usrsctp JNI wrapper (native code)</name>
-    <packaging>pom</packaging>
+    <packaging>jar</packaging>
 
     <properties>
         <usrsctp_prebuilt_dir>${project.build.directory}/usrsctp_prebuilt/${maven_platform_classifier}</usrsctp_prebuilt_dir>
@@ -25,6 +25,8 @@
         <jnisctp_build_dir>${project.build.directory}/jnisctp_cmake/${maven_platform_classifier}</jnisctp_build_dir>
         <jnisctp_install_dir>${project.build.directory}/jnisctp/install/lib/${maven_platform_classifier}</jnisctp_install_dir>
         <jniwrapper_native_classifier>${maven_platform_classifier}</jniwrapper_native_classifier>
+        <!-- Allow install target to execute only if something useful is build -->
+        <maven.install.skip>true</maven.install.skip>
     </properties>
 
     <profiles>
@@ -38,6 +40,9 @@
                     <name>buildJniSctp</name>
                 </property>
             </activation>
+            <properties>
+                <maven.install.skip>false</maven.install.skip>
+            </properties>
             <dependencies>
                 <dependency>
                     <groupId>${project.groupId}</groupId>
@@ -207,4 +212,18 @@
             <version>${project.version}</version>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-jar-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>default-jar</id>
+                        <phase>none</phase>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>

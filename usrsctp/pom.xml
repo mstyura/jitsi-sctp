@@ -26,6 +26,7 @@
         <usrsctp_source_dir>${project.basedir}/usrsctp</usrsctp_source_dir>
         <usrsctp_cmake_dir>${project.build.directory}/usrsctp_cmake/${maven_platform_classifier}</usrsctp_cmake_dir>
         <usrsctp_install_dir>${usrsctp_cmake_dir}/install</usrsctp_install_dir>
+        <!-- Allow install target to execute only if something useful is build -->
         <maven.install.skip>true</maven.install.skip>
     </properties>
 
