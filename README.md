@@ -89,13 +89,48 @@ usrsctp-1.0-SNAPSHOT-7a8bc9a-linux
               `-- libjnisctp.so
 
       ```
-  **Note:** It is intended that platform specific `Maven` arficats produced by `usrsctp` and `jniwrapper-native` modules are built on each supported platform independently and published ahead of time to `Maven` repository 
-  before the rest of the artifacts can be built in way which allow them to be used on any of supported platform.
+  **Note:** It is intended that platform specific `Maven` arficats produced by `usrsctp` and `jniwrapper-native` modules are built on each supported platform independently and published ahead of time to [Maven repository](https://github.com/jitsi/jitsi-maven-repository/) before the rest of the artifacts can be built in way which allow them to be used on any of supported platform.
 
   * The `jnilib` maven module combines the `jniwrapper-java` and `jniwrapper-native` into a single `jar` which includes the Java API and the native JNI library that will be loaded at runtime.
   When built with `mvn package -f pom.xml -DbuildSctp -DbuildJniSctp -pl org.jitsi:jnilib -am` the `jnilib` artifact only include native `jnisctp` library for current platform.
-  To have universal (**fat jar**) `jnilib` suitable to run on any supported platform it necessary to build and publish platform-specific `jniwrapper-native` artifacts for all supported platforms in advance and then pass `-DbuildXPlatJar` switch into Maven. For example, fat `jnilib` jar could be built with `mvn package -DbuildXPlatJar -f pom.xml -pl org.jitsi:jnilib -am`, which will produce fat jar with example content:
+  To have universal (**fat jar**) `jnilib` suitable to run on any supported platform it necessary to build and publish platform-specific `jniwrapper-native` artifacts for all supported platforms in advance and then pass `-DbuildXPlatJar` switch into Maven. For example, fat `jnilib` jar could be built with `mvn package -DbuildXPlatJar -f pom.xml -pl org.jitsi:jnilib`, which will produce fat jar with example content:
     ```
+    $ tree jnilib-1.0-SNAPSHOT --noreport
+    jnilib-1.0-SNAPSHOT
+    |-- META-INF
+    |   |-- MANIFEST.MF
+    |   `-- maven
+    |       `-- org.jitsi
+    |           |-- jnilib
+    |           |   `-- pom.xml
+    |           |-- jniwrapper-java
+    |           |   |-- pom.properties
+    |           |   `-- pom.xml
+    |           `-- jniwrapper-native
+    |               `-- pom.xml
+    |-- cz
+    |   `-- adamh
+    |       `-- utils
+    |           `-- NativeUtils.class
+    |-- lib
+    |   |-- darwin
+    |   |   `-- libjnisctp.jnilib
+    |   |-- linux
+    |   |   `-- libjnisctp.so
+    |   `-- windows
+    |       |-- jnisctp.dll
+    |       `-- jnisctp.pdb
+    |-- native
+    |   `-- headers
+    |       `-- org_jitsi_modified_sctp4j_SctpJni.h
+    `-- org
+        `-- jitsi_modified
+            `-- sctp4j
+                |-- EightArgumentVoidFunc.class
+                |-- FourArgumentIntFunc.class
+                |-- IncomingSctpDataHandler.class
+                |-- OutgoingSctpDataHandler.class
+                `-- SctpJni.class
     ```
 
 
