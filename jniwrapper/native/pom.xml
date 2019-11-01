@@ -30,7 +30,7 @@
     <profiles>
         <profile>
             <!-- This profile is activated when the system property 'buildJniSctp' is defined (i.e. via
-            passing -DbuildJniSctp to maven).  It adds a dependency on the usrsctp jar (since we'll need
+            passing -DbuildJniSctp to maven).It adds a dependency on the usrsctp jar (since we'll need
             the built libraries and include headers from it) and recompiles the native jniwrapper code -->
             <id>build-jni-sctp</id>
             <activation>
@@ -130,7 +130,7 @@
                                         <argument>-DJNISCTP_JNI_HEADERS_DIR=${jniwrapper_java_headers_dir}/native/headers</argument>
                                         <argument>-DJNISCTP_USRSCTP_DIR=${usrsctp_prebuilt_dir}</argument>
                                         <argument>-DCMAKE_INSTALL_PREFIX=${jnisctp_install_dir}</argument>
-                                        <argument>${cmake_c_flags}</argument>
+                                        <argument>-DCMAKE_C_FLAGS='${cmake_c_flags}'</argument>
                                         <argument>${cmake_generator_platform}</argument>
                                         <argument>${project.basedir}/src</argument>
                                     </arguments>

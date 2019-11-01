@@ -72,9 +72,12 @@
                                         <argument>-DCMAKE_BUILD_TYPE=RelWithDebInfo</argument>
                                         <argument>-DCMAKE_POSITION_INDEPENDENT_CODE=ON</argument>
                                         <argument>-Dsctp_invariants=ON</argument>
+                                        <argument>-Dsctp_inet=OFF</argument>
+                                        <argument>-Dsctp_inet6=OFF</argument>
                                         <argument>-Dsctp_debug=OFF</argument>
+                                        <argument>-Dsctp_build_programs=OFF</argument>
                                         <argument>${cmake_generator_platform}</argument>
-                                        <argument>${cmake_c_flags}</argument>
+                                        <argument>-DCMAKE_C_FLAGS='${cmake_c_flags} -D__FUNCTION__=__func__'</argument>
                                         <argument>-DCMAKE_INSTALL_PREFIX=${usrsctp_install_dir}</argument>
                                         <argument>${usrsctp_source_dir}</argument>
                                     </arguments>
