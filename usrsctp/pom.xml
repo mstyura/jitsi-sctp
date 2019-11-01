@@ -26,6 +26,7 @@
         <usrsctp_source_dir>${project.basedir}/usrsctp</usrsctp_source_dir>
         <usrsctp_cmake_dir>${project.build.directory}/usrsctp_cmake/${maven_platform_classifier}</usrsctp_cmake_dir>
         <usrsctp_install_dir>${usrsctp_cmake_dir}/install</usrsctp_install_dir>
+        <maven.install.skip>true</maven.install.skip>
     </properties>
 
     <!-- usrsctp is only compiled if '-DbuildSctp' is passed -->
@@ -37,6 +38,9 @@
                     <name>buildSctp</name>
                 </property>
             </activation>
+            <properties>
+                <maven.install.skip>false</maven.install.skip>
+            </properties>
             <build>
                 <plugins>
                     <plugin>
