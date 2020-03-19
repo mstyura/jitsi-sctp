@@ -67,7 +67,9 @@
                 </os>
             </activation>
             <properties>
-                <os>freebsd</os>
+                <cmake_generator_platform>-DCMAKE_GENERATOR_PLATFORM=x64</cmake_generator_platform>
+                <cmake_c_flags>-fno-omit-frame-pointer -fno-optimize-sibling-calls -Wno-format-truncation -Wno-address-of-packed-member -D__FUNCTION__=__func__</cmake_c_flags>
+                <maven_platform_classifier>freebsd</maven_platform_classifier>
             </properties>
         </profile>
     </profiles>
