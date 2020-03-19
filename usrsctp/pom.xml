@@ -30,15 +30,10 @@
         <maven.install.skip>true</maven.install.skip>
     </properties>
 
-    <!-- usrsctp is only compiled if '-DbuildSctp' is passed -->
+    <!-- usrsctp is only compiled if profile is enabled, e.g '-Pbuild-usrsctp' is passed to maven -->
     <profiles>
         <profile>
-            <id>build usrsctp</id>
-            <activation>
-                <property>
-                    <name>buildSctp</name>
-                </property>
-            </activation>
+            <id>build-usrsctp</id>
             <properties>
                 <maven.install.skip>false</maven.install.skip>
             </properties>

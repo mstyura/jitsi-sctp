@@ -19,12 +19,7 @@
     <packaging>pom</packaging>
     <profiles>
         <profile>
-            <id>build-jar-with-all-native-libraries</id>
-            <activation>
-                <property>
-                    <name>buildXPlatJar</name>
-                </property>
-            </activation>
+            <id>build-x-plat-jar</id>
             <dependencies>
                 <dependency>
                     <groupId>org.jitsi</groupId>
@@ -43,6 +38,12 @@
                     <artifactId>jniwrapper-native</artifactId>
                     <version>${project.version}</version>
                     <classifier>darwin</classifier>
+                </dependency>
+                <dependency>
+                    <groupId>org.jitsi</groupId>
+                    <artifactId>jniwrapper-native</artifactId>
+                    <version>${project.version}</version>
+                    <classifier>freebsd</classifier>
                 </dependency>
             </dependencies>
         </profile>

@@ -31,15 +31,10 @@
 
     <profiles>
         <profile>
-            <!-- This profile is activated when the system property 'buildJniSctp' is defined (i.e. via
-            passing -DbuildJniSctp to maven).It adds a dependency on the usrsctp jar (since we'll need
+            <!-- This profile is activated when 'build-jnisctp' profiles is enabled (i.e. via
+            passing -Pbuild-jnisctp to maven). It adds a dependency on the usrsctp jar (since we'll need
             the built libraries and include headers from it) and recompiles the native jniwrapper code -->
-            <id>build-jni-sctp</id>
-            <activation>
-                <property>
-                    <name>buildJniSctp</name>
-                </property>
-            </activation>
+            <id>build-jnisctp</id>
             <properties>
                 <maven.install.skip>false</maven.install.skip>
             </properties>
