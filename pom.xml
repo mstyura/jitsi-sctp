@@ -58,6 +58,18 @@
                 <maven_platform_classifier>windows</maven_platform_classifier>
             </properties>
         </profile>
+        <profile>
+            <id>freebsd</id>
+            <activation>
+                <os>
+                    <family>unix</family>
+                    <name>freebsd</name>
+                </os>
+            </activation>
+            <properties>
+                <os>freebsd</os>
+            </properties>
+        </profile>
     </profiles>
 
     <modules>
