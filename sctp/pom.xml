@@ -18,7 +18,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.jitsi</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>jnilib</artifactId>
             <version>${project.version}</version>
         </dependency>

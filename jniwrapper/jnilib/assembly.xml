@@ -18,7 +18,7 @@
         <dependencySet>
             <includes>
                 <!-- merge native and java libraries into single fat jar. -->
-                <include>org.jitsi:jniwrapper-*:jar:*</include>
+                <include>${project.groupId}:jniwrapper-*:jar:*</include>
             </includes>
             <outputDirectory>/</outputDirectory>
             <useProjectArtifact>true</useProjectArtifact>

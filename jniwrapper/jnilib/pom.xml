@@ -22,25 +22,25 @@
             <id>build-x-plat-jar</id>
             <dependencies>
                 <dependency>
-                    <groupId>org.jitsi</groupId>
+                    <groupId>${project.groupId}</groupId>
                     <artifactId>jniwrapper-native</artifactId>
                     <version>${project.version}</version>
                     <classifier>windows</classifier>
                 </dependency>
                 <dependency>
-                    <groupId>org.jitsi</groupId>
+                    <groupId>${project.groupId}</groupId>
                     <artifactId>jniwrapper-native</artifactId>
                     <version>${project.version}</version>
                     <classifier>linux</classifier>
                 </dependency>
                 <dependency>
-                    <groupId>org.jitsi</groupId>
+                    <groupId>${project.groupId}</groupId>
                     <artifactId>jniwrapper-native</artifactId>
                     <version>${project.version}</version>
                     <classifier>darwin</classifier>
                 </dependency>
                 <dependency>
-                    <groupId>org.jitsi</groupId>
+                    <groupId>${project.groupId}</groupId>
                     <artifactId>jniwrapper-native</artifactId>
                     <version>${project.version}</version>
                     <classifier>freebsd</classifier>
@@ -51,12 +51,12 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.jitsi</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>jniwrapper-java</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.jitsi</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>jniwrapper-native</artifactId>
             <version>${project.version}</version>
             <classifier>${maven_platform_classifier}</classifier>
