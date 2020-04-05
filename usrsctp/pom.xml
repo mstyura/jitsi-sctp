@@ -24,8 +24,8 @@
 
     <properties>
         <usrsctp_source_dir>${project.basedir}/usrsctp</usrsctp_source_dir>
-        <usrsctp_cmake_dir>${project.build.directory}/usrsctp_cmake/${maven_platform_classifier}</usrsctp_cmake_dir>
-        <usrsctp_install_dir>${usrsctp_cmake_dir}/install</usrsctp_install_dir>
+        <usrsctp_cmake_build_dir>${project.build.directory}/usrsctp_cmake/${maven_platform_classifier}/build</usrsctp_cmake_build_dir>
+        <usrsctp_cmake_install_dir>${project.build.directory}/usrsctp_cmake/${maven_platform_classifier}/install</usrsctp_cmake_install_dir>
         <!-- Allow install target to execute only if something useful is build -->
         <maven.install.skip>true</maven.install.skip>
     </properties>
@@ -55,7 +55,7 @@
                                     <arguments>
                                         <argument>-E</argument>
                                         <argument>make_directory</argument>
-                                        <argument>${usrsctp_cmake_dir}</argument>
+                                        <argument>${usrsctp_cmake_build_dir}</argument>
                                     </arguments>
                                 </configuration>
                             </execution>
@@ -66,7 +66,7 @@
                                     <goal>exec</goal>
                                 </goals>
                                 <configuration>
-                                    <workingDirectory>${usrsctp_cmake_dir}</workingDirectory>
+                                    <workingDirectory>${usrsctp_cmake_build_dir}</workingDirectory>
                                     <executable>cmake</executable>
                                     <arguments>
                                         <argument>-DCMAKE_BUILD_TYPE=RelWithDebInfo</argument>
@@ -76,9 +76,10 @@
                                         <argument>-Dsctp_inet6=OFF</argument>
                                         <argument>-Dsctp_debug=OFF</argument>
                                         <argument>-Dsctp_build_programs=OFF</argument>
+                                        <argument>-Dsctp_build_fuzzer=OFF</argument>
                                         <argument>${cmake_generator_platform}</argument>
                                         <argument>-DCMAKE_C_FLAGS='${cmake_c_flags} -UINET6 -UINET'</argument>
-                                        <argument>-DCMAKE_INSTALL_PREFIX=${usrsctp_install_dir}</argument>
+                                        <argument>-DCMAKE_INSTALL_PREFIX=${usrsctp_cmake_install_dir}</argument>
                                         <argument>${usrsctp_source_dir}</argument>
                                     </arguments>
                                 </configuration>
@@ -91,7 +92,7 @@
                                     <goal>exec</goal>
                                 </goals>
                                 <configuration>
-                                    <workingDirectory>${usrsctp_cmake_dir}</workingDirectory>
+                                    <workingDirectory>${usrsctp_cmake_build_dir}</workingDirectory>
                                     <executable>cmake</executable>
                                     <arguments>
                                         <argument>--build</argument>
@@ -115,7 +116,7 @@
                                     <arguments>
                                         <argument>-E</argument>
                                         <argument>remove_directory</argument>
-                                        <argument>${usrsctp_cmake_dir}</argument>
+                                        <argument>${usrsctp_cmake_build_dir}</argument>
                                     </arguments>
                                 </configuration>
                             </execution>
