@@ -25,25 +25,13 @@
                     <groupId>${project.groupId}</groupId>
                     <artifactId>jniwrapper-native</artifactId>
                     <version>${project.version}</version>
-                    <classifier>windows</classifier>
+                    <classifier>linux-x86_64</classifier>
                 </dependency>
                 <dependency>
                     <groupId>${project.groupId}</groupId>
                     <artifactId>jniwrapper-native</artifactId>
                     <version>${project.version}</version>
-                    <classifier>linux</classifier>
-                </dependency>
-                <dependency>
-                    <groupId>${project.groupId}</groupId>
-                    <artifactId>jniwrapper-native</artifactId>
-                    <version>${project.version}</version>
-                    <classifier>darwin</classifier>
-                </dependency>
-                <dependency>
-                    <groupId>${project.groupId}</groupId>
-                    <artifactId>jniwrapper-native</artifactId>
-                    <version>${project.version}</version>
-                    <classifier>freebsd</classifier>
+                    <classifier>osx-x86_64</classifier>
                 </dependency>
             </dependencies>
         </profile>
