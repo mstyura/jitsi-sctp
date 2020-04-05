@@ -22,9 +22,8 @@
     <properties>
         <usrsctp_prebuilt_dir>${project.build.directory}/usrsctp_prebuilt/${maven_platform_classifier}</usrsctp_prebuilt_dir>
         <jniwrapper_java_headers_dir>${project.build.directory}/jniwrapper_java_headers/</jniwrapper_java_headers_dir>
-        <jnisctp_build_dir>${project.build.directory}/jnisctp_cmake/${maven_platform_classifier}</jnisctp_build_dir>
-        <jnisctp_install_dir>${project.build.directory}/jnisctp/install/lib/${maven_platform_classifier}</jnisctp_install_dir>
-        <jniwrapper_native_classifier>${maven_platform_classifier}</jniwrapper_native_classifier>
+        <jnisctp_cmake_build_dir>${project.build.directory}/jnisctp_cmake/${maven_platform_classifier}/build/</jnisctp_cmake_build_dir>
+        <jnisctp_cmake_install_dir>${project.build.directory}/jnisctp_cmake/${maven_platform_classifier}/install</jnisctp_cmake_install_dir>
         <!-- Allow install target to execute only if something useful is build -->
         <maven.install.skip>true</maven.install.skip>
     </properties>
@@ -43,7 +42,7 @@
                     <groupId>${project.groupId}</groupId>
                     <artifactId>usrsctp</artifactId>
                     <version>${project.version}</version>
-                    <classifier>${usrsctp_commit_id}-${jniwrapper_native_classifier}</classifier>
+                    <classifier>${usrsctp_commit_id}-${maven_platform_classifier}</classifier>
                     <type>jar</type>
                 </dependency>
             </dependencies>
@@ -96,7 +95,7 @@
                                     <arguments>
                                         <argument>-E</argument>
                                         <argument>make_directory</argument>
-                                        <argument>${jnisctp_build_dir}</argument>
+                                        <argument>${jnisctp_cmake_build_dir}</argument>
                                     </arguments>
                                 </configuration>
                             </execution>
@@ -111,7 +110,7 @@
                                     <arguments>
                                         <argument>-E</argument>
                                         <argument>remove_directory</argument>
-                                        <argument>${jnisctp_build_dir}</argument>
+                                        <argument>${jnisctp_cmake_build_dir}</argument>
                                     </arguments>
                                 </configuration>
                             </execution>
@@ -122,14 +121,14 @@
                                     <goal>exec</goal>
                                 </goals>
                                 <configuration>
-                                    <workingDirectory>${jnisctp_build_dir}</workingDirectory>
+                                    <workingDirectory>${jnisctp_cmake_build_dir}</workingDirectory>
                                     <executable>cmake</executable>
                                     <arguments>
                                         <argument>-DCMAKE_BUILD_TYPE=RelWithDebInfo</argument>
                                         <argument>-DCMAKE_POSITION_INDEPENDENT_CODE=ON</argument>
                                         <argument>-DJNISCTP_JNI_HEADERS_DIR=${jniwrapper_java_headers_dir}/native/headers</argument>
                                         <argument>-DJNISCTP_USRSCTP_DIR=${usrsctp_prebuilt_dir}</argument>
-                                        <argument>-DCMAKE_INSTALL_PREFIX=${jnisctp_install_dir}</argument>
+                                        <argument>-DCMAKE_INSTALL_PREFIX=${jnisctp_cmake_install_dir}</argument>
                                         <argument>-DCMAKE_C_FLAGS='${cmake_c_flags}'</argument>
                                         <argument>${cmake_generator_platform}</argument>
                                         <argument>${project.basedir}/src</argument>
@@ -143,7 +142,7 @@
                                     <goal>exec</goal>
                                 </goals>
                                 <configuration>
-                                    <workingDirectory>${jnisctp_build_dir}</workingDirectory>
+                                    <workingDirectory>${jnisctp_cmake_build_dir}</workingDirectory>
                                     <executable>cmake</executable>
                                     <arguments>
                                         <argument>--build</argument>
@@ -163,7 +162,7 @@
                                     <goal>exec</goal>
                                 </goals>
                                 <configuration>
-                                    <workingDirectory>${jnisctp_build_dir}</workingDirectory>
+                                    <workingDirectory>${jnisctp_cmake_build_dir}</workingDirectory>
                                     <executable>cmake</executable>
                                     <arguments>
                                         <argument>--build</argument>
