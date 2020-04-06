@@ -21,6 +21,18 @@
             <groupId>${project.groupId}</groupId>
             <artifactId>jnilib</artifactId>
             <version>${project.version}</version>
+            <exclusions>
+                <!-- This dependencies are embedded into jnilib jar and not need to be
+                     visible as "standalone" dependencies -->
+                <exclusion>
+                    <groupId>${project.groupId}</groupId>
+                    <artifactId>jniwrapper-java</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>${project.groupId}</groupId>
+                    <artifactId>jniwrapper-native</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
