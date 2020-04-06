@@ -8,9 +8,9 @@ Because JNI has a complex build process multiplied by being platform dependent, 
     |-- jniwrapper
     |   |-- java
     |   |-- jnilib
-    |   `-- native (produces platform specific artifact)
+    |   `-- native (produces platform specific artifact classified by OS & CPU architecture)
     |-- sctp
-    `-- usrsctp (produces platform specific artifact)
+    `-- usrsctp (produces platform specific artifact classified by OS & CPU architecture)
 ```
 
 * The `usrsctp` module handles the compilation of the [`usrsctp`](https://github.com/sctplab/usrsctp).
@@ -19,10 +19,10 @@ The module is build only when `build-usrsctp` profile is enabled, e.g. `-Pbuild-
 Execution of 
 `mvn package -Pbuild-usrsctp -f pom.xml -pl org.jitsi:usrsctp` will create a jar that will include the native library and the necessary include headers for current platform.
 A resulting `jar` artifact has [maven classifier](https://maven.apache.org/pom.html) specified as a concatenation of `usrsctp` commit and target platform.
-For example, an artifact for `Linux` might be named as `usrsctp-1.0-SNAPSHOT-7a8bc9a-linux.jar` with an example content:
+For example, an artifact for `Linux` might be named as `usrsctp-1.0-SNAPSHOT-7a8bc9a-linux-x86_64.jar` with an example content:
 ```text
-$ tree usrsctp-1.0-SNAPSHOT-7a8bc9a-linux --noreport
-usrsctp-1.0-SNAPSHOT-7a8bc9a-linux
+$ tree usrsctp-1.0-SNAPSHOT-7a8bc9a-linux-x86_64 --noreport
+usrsctp-1.0-SNAPSHOT-7a8bc9a-linux-x86_64
 |-- META-INF
 |   |-- MANIFEST.MF
 |   `-- maven
@@ -69,16 +69,16 @@ usrsctp-1.0-SNAPSHOT-7a8bc9a-linux
   * The `jniwrapper-native` module contains the `C` portion of the JNI API that bridges the Java and the [`usrsctp`](https://github.com/sctplab/usrsctp) native lib.
   The module is build only when `build-jnisctp` profile is enabled, e.g. `-Pbuild-jnisctp` switch is passed to Maven.
   It depends on two other modules:
-    * `usrsctp` module, because it needs the pre-built `usrsctp` static library and include headers;
+    * `usrsctp` module, because it needs the pre-built `usrsctp` static library and include headers. The version of `usrsctp` artifact used is specified by property `usrsctp_commit_id` in `jniwrapper/pom.xml` and having short commit hash of pre-built `usrsctp`;
     * `jniwrapper-java` module, because it need `java -h` generated `JNI` header file to match the `C` implementation.
 
-    The `compile` build phase of `jniwrapper-native` module will create a new dynamic jni lib in `target/jnisctp/install/lib`. E.g. on `Linux` it produces dynamic library `target/jnisctp/install/lib/linux/libjnisctp.so`.
+    The `compile` build phase of `jniwrapper-native` module will create a new dynamic jni lib in `target/jnisctp_cmake/{os}-{arch}/install`. E.g. on `Linux` it produces dynamic library `target/jnisctp_cmake/linux-x86_64/install/libjnisctp.so`.
 
     The `package` build phase of `jniwrapper-native` module will create a platform specific `jar` that includes the java code and the shared native library for current platform. It is assumed that `usrsctp` artifact for target platform is already available in `Maven`.
     Below is an example of artifact produced by `mvn package -Pbuild-usrsctp -Pbuild-jnisctp -f pom.xml -pl org.jitsi:jniwrapper-native -am` is presented:
       ```text
-      $ tree jniwrapper-native-1.0-SNAPSHOT-linux --noreport
-      jniwrapper-native-1.0-SNAPSHOT-linux
+      $ tree jniwrapper-native-1.0-SNAPSHOT-linux-x86_64 --noreport
+      jniwrapper-native-1.0-SNAPSHOT-linux-x86_64
       |-- META-INF
       |   |-- MANIFEST.MF
       |   `-- maven
@@ -86,7 +86,7 @@ usrsctp-1.0-SNAPSHOT-7a8bc9a-linux
       |           `-- jniwrapper-native
       |               `-- pom.xml
       `-- lib
-          `-- linux
+          `-- linux-x86_64
               `-- libjnisctp.so
 
       ```
@@ -114,13 +114,13 @@ usrsctp-1.0-SNAPSHOT-7a8bc9a-linux
     |       `-- utils
     |           `-- NativeUtils.class
     |-- lib
-    |   |-- darwin
+    |   |-- osx-x86_64
     |   |   `-- libjnisctp.jnilib
-    |   |-- linux
+    |   |-- linux-x86_64
     |   |   `-- libjnisctp.so
-    |   |-- freebsd
+    |   |-- freebsd-x86_64
     |   |   `-- libjnisctp.so
-    |   `-- windows
+    |   `-- windows-x86_64
     |       |-- jnisctp.dll
     |       `-- jnisctp.pdb
     |-- native
