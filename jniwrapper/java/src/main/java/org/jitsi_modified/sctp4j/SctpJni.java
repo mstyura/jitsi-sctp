@@ -45,7 +45,7 @@ public class SctpJni {
                 throw new Exception("Unsupported CPU architecture: " + System.getProperty("os.arch"));
             }
 
-            if (os.contains("mac")) {
+            if (os.contains("osx")) {
                 System.out.println("SCTP JNI load: Mac OS detected");
                 NativeUtils.loadLibraryFromJar(String.format("/lib/%s-%s/libjnisctp.jnilib", os, arch));
             } else if (os.contains("linux")) {
