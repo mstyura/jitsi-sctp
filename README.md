@@ -140,9 +140,17 @@ usrsctp-1.0-SNAPSHOT-7a8bc9a-linux-x86_64
 * The `sctp` module contains the Java library on top of the JNI code. 
 The jar built by this is what is intended to be used by other code.
 
+## Pre-required software to build
+`CMake` is required to build native libraries. 
+Native compilers `GCC`/`Clang`/`Visual C++` required to build native libraries.
+
 ### Building the jar files
 * Clone the project and initialize [`usrsctp`](https://github.com/sctplab/usrsctp) git submodule.
-* Run `mvn package -f pom.xml` (and `mvn install -f pom.xml` to install locally). It assumes that platform specific artifacts like `usrsctp` and `jniwrapper-native` are already available in Maven. To compile and install all artifacts locally run `mvn install -Pbuild-usrsctp -Pbuild-jnisctp -f pom.xml`, this will build native and `Java` code for current platform and install resulting artifacts to local repository.
+    ```
+    > git clone --recurse-submodules https://github.com/jitsi/jitsi-sctp.git jitsi-sctp
+    ```
+* Run `mvn install -Pbuild-usrsctp -Pbuild-jnisctp -f pom.xml` to build both `Java` and native artifacts for current platform and install them into local `Maven` repository.
+If you don't want to re-build native artifacts `usrsctp` and `jniwrapper-native` and prefer using pre-built version of them from `Maven` you may build and install `Java` artifacts via `mvn install -f pom.xml`.
 * Depend on the `org.jitsi:sctp` artifact to use `jitsi-sctp` in your project.
 
 ### (Re)Building a new JNI lib
@@ -153,10 +161,8 @@ To re-build native libraries cross-platform [`CMake`](https://cmake.org/) build 
 
 The following steps can be done to produce an updated version of `jitsi-sctp` artifact with newer version of `usrsctp` or `jniwrapper-native`:
 
-1. Clone the project with `git clone --recurse-submodules <jitsi-sctp-git-url>`.
-    ```
-    > git clone --recurse-submodules https://github.com/jitsi/jitsi-sctp.git jitsi-sctp
-    ```
+1. Clone the project with `git clone --recurse-submodules https://github.com/jitsi/jitsi-sctp.git`.
+
 
 2. \[Optional\] initialize the [usrsctp](https://github.com/sctplab/usrsctp) submodule with `git submodule update --init --recursive`:
     ```
