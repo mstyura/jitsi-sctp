@@ -32,7 +32,7 @@ jobs:
     - name: Build with Maven
       run: mvn -B package --file pom.xml --projects org.jitsi:usrsctp,org.jitsi:jniwrapper-native --also-make --activate-profiles build-usrsctp,build-jnisctp
 
-    #- name: Publish to GitHub Packages Apache Maven
-    #  run: mvn -B deploy --projects org.jitsi:usrsctp,org.jitsi:jniwrapper-native
+    - name: Publish to GitHub Packages Apache Maven
+      run: mvn -B deploy --projects org.jitsi:usrsctp,org.jitsi:jniwrapper-native -DaltDeploymentRepository=github::default::https://maven.pkg.github.com/mstyura/jitsi-sctp
       env:
-        GITHUB_TOKEN: ${{ github.token }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
