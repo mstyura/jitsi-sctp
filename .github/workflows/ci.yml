@@ -28,9 +28,9 @@ jobs:
       uses: jwlawson/actions-setup-cmake@v1.2
 
     - name: Build with Maven
-      run: mvn -B package --file pom.xml --projects org.jitsi:usrsctp,org.jitsi:jniwrapper-native --also-make
+      run: mvn -B package --file pom.xml --projects org.jitsi:usrsctp,org.jitsi:jniwrapper-native --also-make --activate-profiles build-usrsctp,build-jnisctp
 
-    - name: Publish to GitHub Packages Apache Maven
-      run: mvn -B deploy --projects org.jitsi:usrsctp,org.jitsi:jniwrapper-native
+    #- name: Publish to GitHub Packages Apache Maven
+    #  run: mvn -B deploy --projects org.jitsi:usrsctp,org.jitsi:jniwrapper-native
       env:
         GITHUB_TOKEN: ${{ github.token }}
