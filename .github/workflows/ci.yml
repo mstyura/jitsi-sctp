@@ -30,6 +30,6 @@ jobs:
       uses: jwlawson/actions-setup-cmake@v1.2
 
     - name: Build with Maven and publish to GitHub Packages Apache Maven
-      run: mvn -B package deploy --file pom.xml --projects org.jitsi:usrsctp,org.jitsi:jniwrapper-native --also-make --activate-profiles build-usrsctp,build-jnisctp -DaltDeploymentRepository=GitHubPackages::default::https://maven.pkg.github.com/mstyura/jitsi-sctp
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: mvn -B package deploy --file pom.xml --projects org.jitsi:usrsctp,org.jitsi:jniwrapper-native --also-make --activate-profiles build-usrsctp,build-jnisctp -DaltDeploymentRepository=github::default::https://maven.pkg.github.com/mstyura/jitsi-sctp
