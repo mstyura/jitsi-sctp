@@ -33,5 +33,5 @@ jobs:
       env:
         GITHUB_USERNAME: x-access-token
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: mvn -B package deploy --file pom.xml --projects org.jitsi:usrsctp,org.jitsi:jniwrapper-native --also-make --activate-profiles build-usrsctp,build-jnisctp -DaltDeploymentRepository=github::default::https://maven.pkg.github.com/mstyura/jitsi-sctp
+      run: mvn -B package deploy --file pom.xml --projects org.jitsi:usrsctp,org.jitsi:jniwrapper-native --also-make --activate-profiles build-usrsctp,build-jnisctp -DaltDeploymentRepository=github::default::https://maven.pkg.github.com/mstyura/jitsi-sctp/
 
