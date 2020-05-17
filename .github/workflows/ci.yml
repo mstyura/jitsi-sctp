@@ -26,8 +26,14 @@ jobs:
       with:
         java-version: 1.8
         
-    - name: actions-setup-cmake
+    - name: Setup CMake
       uses: jwlawson/actions-setup-cmake@v1.2
+
+    - name: Update version in pom.xml
+      run: |
+        VERSION=`git describe --match "v[0-9\.]*" --long`
+        echo "New version: ${VERSION:1}"
+        mvn versions:set -DnewVersion=${VERSION:1}
 
     - name: Build with Maven and publish to GitHub Packages Apache Maven
       env:
