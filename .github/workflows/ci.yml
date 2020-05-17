@@ -42,5 +42,5 @@ jobs:
       run: |
         mkdir -p ~/.m2
         echo "<settings><servers><server><id>github</id><username>${GITHUB_USERNAME}</username><password>${GITHUB_TOKEN}</password></server></servers></settings>" > ~/.m2/settings.xml
-        mvn -B -X -Dmaven.wagon.http.pool=false package deploy --file pom.xml --projects org.jitsi:usrsctp,org.jitsi:jniwrapper-native --also-make --activate-profiles build-usrsctp,build-jnisctp -DaltDeploymentRepository=github::default::https://maven.pkg.github.com/mstyura/jitsi-sctp/
+        mvn -B -X package deploy --file pom.xml --projects org.jitsi:usrsctp,org.jitsi:jniwrapper-native --also-make --activate-profiles build-usrsctp,build-jnisctp -DaltDeploymentRepository=github::default::https://maven.pkg.github.com/mstyura/jitsi-sctp/
 
