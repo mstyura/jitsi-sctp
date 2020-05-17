@@ -29,6 +29,14 @@ jobs:
     - name: Setup CMake
       uses: jwlawson/actions-setup-cmake@v1.2
 
+    - name: Git info
+      run: |
+        git describe
+        git describe --match "v[0-9\.]*" --long
+        git tag -l
+        git branch -r
+
+
     - name: Update version in pom.xml
       run: |
         VERSION=`git describe --match "v[0-9\.]*" --long`
