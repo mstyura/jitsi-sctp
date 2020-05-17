@@ -35,10 +35,10 @@ jobs:
 
     - name: Git info
       run: |
-        git describe
-        git describe --match "v[0-9\.]*" --long
         git tag -l
         git branch -r
+        git describe --match "v[0-9\.]*" --long
+        git describe
 
     - name: Update version in pom.xml
       run: |
