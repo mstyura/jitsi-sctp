@@ -50,7 +50,7 @@ jobs:
         
     - name: Build artifacts
       run: |
-        mvn -B -X -U clean package --file pom.xml --projects org.jitsi:usrsctp --also-make --activate-profiles build-usrsctp
+        mvn -B -X -U clean package install --file pom.xml --projects org.jitsi:usrsctp --also-make --activate-profiles build-usrsctp
 
     - name: Deploy artifacts
       run: |
