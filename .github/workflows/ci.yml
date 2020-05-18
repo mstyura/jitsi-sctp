@@ -54,5 +54,5 @@ jobs:
 
     - name: Deploy artifacts
       run: |
-        mvn -B -X deploy --file pom.xml --projects org.jitsi:usrsctp -DaltDeploymentRepository=github::default::https://maven.pkg.github.com/mstyura/jitsi-sctp/
+        mvn -B -X deploy --file pom.xml --projects org.jitsi:usrsctp --active-profiles build-usrsctp -DaltDeploymentRepository=github::default::https://maven.pkg.github.com/mstyura/jitsi-sctp/
 
