@@ -50,7 +50,7 @@ jobs:
         
     - name: Build artifacts
       run: |
-        mvn -B -X -U clean package install deploy --file pom.xml --projects org.jitsi:usrsctp --also-make --activate-profiles build-usrsctp 
+        mvn -B -X -U clean package install --file pom.xml --projects org.jitsi:usrsctp --also-make --activate-profiles build-usrsctp 
 
     # Dedicated step to deploy artifact to avoid issue with maven uploading same package twice to GitHub packages, which causes second
     # copy upload failure with "422 Unprocessable Entity" and hence build failure.
