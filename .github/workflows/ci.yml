@@ -50,9 +50,9 @@ jobs:
         
     - name: Build artifacts
       run: |
-        mvn -B -X -U clean package install --file pom.xml --projects org.jitsi:usrsctp --also-make --activate-profiles build-usrsctp
+        mvn -B -X -U clean package install deploy --file pom.xml --projects org.jitsi:usrsctp --also-make --activate-profiles build-usrsctp -DaltDeploymentRepository=github::default::https://maven.pkg.github.com/mstyura/jitsi-sctp/
 
-    - name: Deploy artifacts
-      run: |
-        mvn -B -X deploy --file pom.xml --projects org.jitsi:usrsctp --activate-profiles build-usrsctp -DaltDeploymentRepository=github::default::https://maven.pkg.github.com/mstyura/jitsi-sctp/
+#    - name: Deploy artifacts
+#      run: |
+#        mvn -B -X deploy --file pom.xml --projects org.jitsi:usrsctp --activate-profiles build-usrsctp -DaltDeploymentRepository=github::default::https://maven.pkg.github.com/mstyura/jitsi-sctp/
 
