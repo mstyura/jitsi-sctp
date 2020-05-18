@@ -130,6 +130,9 @@
                                 <!-- Assembly contents are defined in this file -->
                                 <descriptor>assembly.xml</descriptor>
                             </descriptors>
+                            <!-- prevent upload artifact twice on deploy, which is not supported by GitHub Packages
+                                 source: https://stackoverflow.com/a/31173127/576597 -->
+                            <attach>false</attach>
                         </configuration>
                         <executions>
                             <execution>
