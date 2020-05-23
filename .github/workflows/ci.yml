@@ -10,7 +10,7 @@ jobs:
     
     strategy:
       matrix:
-        platform: [ubuntu-latest, macos-latest, windows-latest ]
+        platform: [ubuntu-latest] #, macos-latest, windows-latest ]
 
     runs-on: ${{ matrix.platform }}
     
@@ -53,10 +53,16 @@ jobs:
         mkdir -p ~/.m2
         echo "<settings><servers><server><id>github</id><username>${GITHUB_USERNAME}</username><password>${GITHUB_TOKEN}</password></server></servers></settings>" > ~/.m2/settings.xml
         
-    - name: Build artifacts
+    - name: Build native artifacts
       shell: bash
       run: |
         mvn -B -X -U clean package install --file pom.xml --projects org.jitsi:usrsctp,org.jitsi:jniwrapper-native --also-make --activate-profiles build-usrsctp,build-jnisctp
+
+    - name: Upload native artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        path: usrsctp/target/usrsctp-*.jar
+        path: jniwrapper/native/target/jniwrapper-native-*.jar
 
     # Dedicated step to deploy artifact to avoid issue with maven uploading same package twice to GitHub packages, which causes second
     # copy upload failure with "422 Unprocessable Entity" and hence build failure.
