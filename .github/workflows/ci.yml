@@ -114,8 +114,8 @@ jobs:
           path: usrsctp/target
 
       - name: Display structure of downloaded usrsctp files
-          run: ls -R
-          working-directory: usrsctp/target
+        run: ls -R
+        working-directory: usrsctp/target
 
       - name: Download pre-built jniwrapper-native artifact
           uses: actions/download-artifact@v2
@@ -124,8 +124,8 @@ jobs:
             path: jniwrapper/native/target/
 
       - name: Display structure of downloaded usrsctp files
-          run: ls -R
-          working-directory: jniwrapper/native/target/
+        run: ls -R
+        working-directory: jniwrapper/native/target/
         
       
     # Dedicated step to deploy artifact to avoid issue with maven uploading same package twice to GitHub packages, which causes second
