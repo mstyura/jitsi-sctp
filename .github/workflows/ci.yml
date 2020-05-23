@@ -61,11 +61,13 @@ jobs:
     - name: Upload usrsctp artifacts
       uses: actions/upload-artifact@v2
       with:
+        name: usrsctp
         path: usrsctp/target/usrsctp-*.jar
 
     - name: Upload jniwrapper-native artifacts
       uses: actions/upload-artifact@v2
       with:
+        name: jniwrapper-native
         path: jniwrapper/native/target/jniwrapper-native-*.jar
 
     # Dedicated step to deploy artifact to avoid issue with maven uploading same package twice to GitHub packages, which causes second
