@@ -37,6 +37,7 @@ jobs:
         github-api-token: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Update version in pom.xml
+      shell: bash
       run: |
         VERSION=`git describe --match "v[0-9\.]*" --long`
         echo "New version: ${VERSION:1}"
