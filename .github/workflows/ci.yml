@@ -111,12 +111,12 @@ jobs:
       - name: Build native artifacts
         shell: bash
         run: |
-          mvn -B -X -U package install --file pom.xml --active-profiles build-x-plat-jar
+          mvn -B -X -U package install --file pom.xml --activate-profiles build-x-plat-jar
   
     # Dedicated step to deploy artifact to avoid issue with maven uploading same package twice to GitHub packages, which causes second
     # copy upload failure with "422 Unprocessable Entity" and hence build failure.
       - name: Deploy artifacts
         shell: bash
         run: |
-          mvn -B -X deploy --file pom.xml --active-profiles build-x-plat-jar -DaltDeploymentRepository=github::default::https://maven.pkg.github.com/mstyura/jitsi-sctp/
+          mvn -B -X deploy --file pom.xml --activate-profiles build-x-plat-jar -DaltDeploymentRepository=github::default::https://maven.pkg.github.com/mstyura/jitsi-sctp/
 
