@@ -126,11 +126,16 @@ jobs:
       - name: Display structure of downloaded jniwrapper-native files
         run: ls -R
         working-directory: jniwrapper/native/target/
-  
-      - name: Build Java artifacts
+
+      - name: Install pre-built native artifacts
         shell: bash
         run: |
-          mvn -B -X -U package install --file pom.xml
+          find -name ".jar" -exec mvn install:install-file {} \; 
+  
+      - name: Build native artifacts
+        shell: bash
+        run: |
+          mvn -B -X -U package install --file pom.xml 
   
     # Dedicated step to deploy artifact to avoid issue with maven uploading same package twice to GitHub packages, which causes second
     # copy upload failure with "422 Unprocessable Entity" and hence build failure.
