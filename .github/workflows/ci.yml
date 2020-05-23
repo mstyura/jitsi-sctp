@@ -118,10 +118,10 @@ jobs:
         working-directory: usrsctp/target
 
       - name: Download pre-built jniwrapper-native artifact
-          uses: actions/download-artifact@v2
-          with:
-            name: usrsctp
-            path: jniwrapper/native/target/
+        uses: actions/download-artifact@v2
+        with:
+          name: usrsctp
+          path: jniwrapper/native/target/
 
       - name: Display structure of downloaded usrsctp files
         run: ls -R
