@@ -58,17 +58,11 @@ jobs:
       run: |
         mvn -B -X -U clean package install --file pom.xml --projects org.jitsi:usrsctp,org.jitsi:jniwrapper-native --also-make --activate-profiles build-usrsctp,build-jnisctp
 
-    - name: Upload usrsctp artifacts
+    - name: Upload org.jitsi m2 artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: usrsctp
-        path: usrsctp/target/usrsctp-*.jar
-
-    - name: Upload jniwrapper-native artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: jniwrapper-native
-        path: jniwrapper/native/target/jniwrapper-native-*.jar
+        name: m2-org-jitsi
+        path: ~/.m2/repository/org/jitsi/
 
   build:
     name: "Build and publish java artifacts with bundled native libraries"
@@ -106,32 +100,13 @@ jobs:
         run: |
           mkdir -p ~/.m2
           echo "<settings><servers><server><id>github</id><username>${GITHUB_USERNAME}</username><password>${GITHUB_TOKEN}</password></server></servers></settings>" > ~/.m2/settings.xml
-    
-      - name: Download pre-built usrsctp artifact
+
+      - name: Download org.jitsi m2 artifact
         uses: actions/download-artifact@v2
         with:
-          name: usrsctp
-          path: usrsctp/target
+          name: m2-org-jitsi
+          path: ~/.m2/repository/org/jitsi/
 
-      - name: Display structure of downloaded usrsctp files
-        run: ls -R
-        working-directory: usrsctp/target
-
-      - name: Download pre-built jniwrapper-native artifact
-        uses: actions/download-artifact@v2
-        with:
-          name: jniwrapper-native
-          path: jniwrapper/native/target/
-
-      - name: Display structure of downloaded jniwrapper-native files
-        run: ls -R
-        working-directory: jniwrapper/native/target/
-
-      - name: Install pre-built native artifacts
-        shell: bash
-        run: |
-          find -name "*.jar" -exec mvn install:install-file -Dfile={} \; 
-  
       - name: Build native artifacts
         shell: bash
         run: |
