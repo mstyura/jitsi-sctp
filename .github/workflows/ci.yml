@@ -130,7 +130,7 @@ jobs:
       - name: Install pre-built native artifacts
         shell: bash
         run: |
-          find -name ".jar" -exec mvn install:install-file {} \; 
+          find -name "*.jar" -exec mvn install:install-file {} \; 
   
       - name: Build native artifacts
         shell: bash
