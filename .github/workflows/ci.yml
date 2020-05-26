@@ -62,6 +62,8 @@ jobs:
         
     steps:
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0 # entire history
   
       - name: Git fetch tags
         shell: bash
