@@ -44,21 +44,12 @@ jobs:
         echo "New version: ${VERSION:1}"
         mvn versions:set -DnewVersion=${VERSION:1}
 
-    - name: Generate Maven settings
-      shell: bash
-      env:
-        GITHUB_USERNAME: mstyura
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: |
-        mkdir -p ~/.m2
-        echo "<settings><servers><server><id>github</id><username>${GITHUB_USERNAME}</username><password>${GITHUB_TOKEN}</password></server></servers></settings>" > ~/.m2/settings.xml
-        
-    - name: Build native artifacts
+    - name: Build native libraries artifacts
       shell: bash
       run: |
         mvn -B -X -U clean package install --file pom.xml --projects org.jitsi:usrsctp,org.jitsi:jniwrapper-native --also-make --activate-profiles build-usrsctp,build-jnisctp
 
-    - name: Upload org.jitsi m2 artifacts
+    - name: Upload ~/.m2/repository/org/jitsi as artifacts
       uses: actions/upload-artifact@v2
       with:
         name: m2-org-jitsi
@@ -71,9 +62,6 @@ jobs:
         
     steps:
       - uses: actions/checkout@v2
-        with:
-          submodules: 'recursive'
-          fetch-depth: 0 # entire history
   
       - name: Git fetch tags
         shell: bash
@@ -95,13 +83,13 @@ jobs:
       - name: Generate Maven settings
         shell: bash
         env:
-          GITHUB_USERNAME: mstyura
+          GITHUB_USERNAME: ${{ github.actor }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           mkdir -p ~/.m2
           echo "<settings><servers><server><id>github</id><username>${GITHUB_USERNAME}</username><password>${GITHUB_TOKEN}</password></server></servers></settings>" > ~/.m2/settings.xml
 
-      - name: Download org.jitsi m2 artifact
+      - name: Download ~/.m2/repository/org/jitsi with native artifacts
         uses: actions/download-artifact@v2
         with:
           name: m2-org-jitsi
@@ -118,5 +106,5 @@ jobs:
       - name: Deploy artifacts
         shell: bash
         run: |
-          mvn -B -X deploy --file pom.xml --activate-profiles build-x-plat-jar -DaltDeploymentRepository=github::default::https://maven.pkg.github.com/mstyura/jitsi-sctp/
+          mvn -B -X deploy --file pom.xml --activate-profiles build-x-plat-jar -DaltDeploymentRepository=github::default::https://maven.pkg.github.com/${{ github.repository }}
 
