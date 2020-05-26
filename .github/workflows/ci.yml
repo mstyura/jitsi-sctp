@@ -3,7 +3,11 @@
 
 name: Jitsi SCTP
 
-on: push
+on:
+  push:
+    branches: [ master, github-actions ]
+  pull_request:
+    branches: [ master ]
 
 jobs:
   build-native-libs:
