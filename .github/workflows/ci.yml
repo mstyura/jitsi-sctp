@@ -110,7 +110,7 @@ jobs:
       # Dedicated step to deploy artifact to avoid issue with maven uploading same package twice to GitHub packages, which causes second
       # copy upload failure with "422 Unprocessable Entity" and hence build failure.
       - name: Deploy artifacts
-        if: github.ref == ‘refs/heads/master && github.event_name == ‘push’ 
+        if: github.ref == 'refs/heads/master' && github.event_name == 'push' 
         shell: bash
         run: |
           mvn -B -X deploy --file pom.xml --activate-profiles build-x-plat-jar -DaltDeploymentRepository=github::default::https://maven.pkg.github.com/${{ github.repository }}
