@@ -102,14 +102,15 @@ jobs:
           # full path is workaround for https://github.com/actions/download-artifact/issues/37
           path: /home/runner/.m2/repository/org/jitsi/
 
-      - name: Build native artifacts
+      - name: Build jitsi-sctp artifacts
         shell: bash
         run: |
           mvn -B -X -U package install --file pom.xml --activate-profiles build-x-plat-jar
   
-    # Dedicated step to deploy artifact to avoid issue with maven uploading same package twice to GitHub packages, which causes second
-    # copy upload failure with "422 Unprocessable Entity" and hence build failure.
+      # Dedicated step to deploy artifact to avoid issue with maven uploading same package twice to GitHub packages, which causes second
+      # copy upload failure with "422 Unprocessable Entity" and hence build failure.
       - name: Deploy artifacts
+        if: github.ref == ‘refs/heads/master && github.event_name == ‘push’ 
         shell: bash
         run: |
           mvn -B -X deploy --file pom.xml --activate-profiles build-x-plat-jar -DaltDeploymentRepository=github::default::https://maven.pkg.github.com/${{ github.repository }}
